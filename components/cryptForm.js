@@ -1,119 +1,115 @@
-import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal} from '@chakra-ui/react';
-import { Toaster, toaster } from "@/components/ui/toaster";
-import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/alert';
-import { FaDownload, FaEdit } from 'react-icons/fa';
-import { useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
-import NextLink from 'next/link';
-import crypto from 'crypto';
+import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal } from '@chakra-ui/react'
+import { Toaster, toaster } from '@/components/ui/toaster'
+import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/alert'
+import { FaDownload, FaEdit } from 'react-icons/fa'
+import { useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
+import NextLink from 'next/link'
+import crypto from 'crypto'
 
-const Editor = dynamic(() => import('./editor'), { ssr: false });
+const Editor = dynamic(() => import('./editor'), { ssr: false })
 
-function isGzip(data) {
-  return data[0] == 0x1F && data[1] == 0x8B;
+function isGzip (data) {
+  return data[0] == 0x1F && data[1] == 0x8B
 }
 
-function getJSONParseError(data) {
+function getJSONParseError (data) {
   try {
-    JSON.parse(data.toString());
+    JSON.parse(data.toString())
   } catch (e) {
-    return e;
+    return e
   }
 
-  return null;
+  return null
 }
 
-function isJSON(data) {
+function isJSON (data) {
   try {
-    JSON.parse(data.toString());
+    JSON.parse(data.toString())
   } catch (e) {
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
-async function pipeThrough(data, stream) {
-  let piped = Buffer.from('');
+async function pipeThrough (data, stream) {
+  let piped = Buffer.from('')
   const reader = new Blob([data]).stream()
     .pipeThrough(stream)
-    .getReader();
+    .getReader()
 
   while (true) {
-    const { done, value } = await reader.read();
-    if (done)
-      break;
+    const { done, value } = await reader.read()
+    if (done) { break }
 
-    piped = Buffer.concat([piped, value]);
+    piped = Buffer.concat([piped, value])
   }
 
-  return piped;
+  return piped
 }
 
-async function cryptData(data, password, isEncryption, shouldGzip) {
-  let wasGunzipped = false;
+async function cryptData (data, password, isEncryption, shouldGzip) {
+  let wasGunzipped = false
   if (isEncryption) {
-    if (shouldGzip)
-      data = await pipeThrough(data, new CompressionStream('gzip'));
+    if (shouldGzip) { data = await pipeThrough(data, new CompressionStream('gzip')) }
 
     if (password) {
-      const iv = crypto.randomBytes(16);
-      const cipher = crypto.createCipheriv('aes-128-cbc', crypto.pbkdf2Sync(password, iv, 100, 16, 'sha1'), iv);
-      data = Buffer.concat([iv, cipher.update(data), cipher.final()]);
+      const iv = crypto.randomBytes(16)
+      const cipher = crypto.createCipheriv('aes-128-cbc', crypto.pbkdf2Sync(password, iv, 100, 16, 'sha1'), iv)
+      data = Buffer.concat([iv, cipher.update(data), cipher.final()])
     }
   } else {
     if (password) {
-      const iv = data.subarray(0, 16);
-      const decipher = crypto.createDecipheriv('aes-128-cbc', crypto.pbkdf2Sync(password, iv, 100, 16, 'sha1'), iv);
-      data = Buffer.concat([decipher.update(data.subarray(16)), decipher.final()]);
+      const iv = data.subarray(0, 16)
+      const decipher = crypto.createDecipheriv('aes-128-cbc', crypto.pbkdf2Sync(password, iv, 100, 16, 'sha1'), iv)
+      data = Buffer.concat([decipher.update(data.subarray(16)), decipher.final()])
     }
 
     if (isGzip(data)) {
-      wasGunzipped = true;
-      data = await pipeThrough(data, new DecompressionStream('gzip'));
+      wasGunzipped = true
+      data = await pipeThrough(data, new DecompressionStream('gzip'))
     }
   }
 
-  return { wasGunzipped, cryptedData: data };
+  return { wasGunzipped, cryptedData: data }
 }
 
-export default function CryptForm({ isEncryption, isLoading, setIsLoading, password }) {
-
-  const saveFileRef = useRef();
-  const [data, setData] = useState(null);
-  const [editorData, setEditorData] = useState(null);
-  const [shouldGzip, setShouldGzip] = useState(false);
-  const [lastFileName, setLastFileName] = useState(null);
-  const [isEncryptionWarning, setIsEncryptionWarning] = useState(false);
-  const { isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure();
-  const { isOpen: isEditorOpen, onOpen: onEditorOpen, onClose: onEditorClose } = useDisclosure();
+export default function CryptForm ({ isEncryption, isLoading, setIsLoading, password }) {
+  const saveFileRef = useRef()
+  const [data, setData] = useState(null)
+  const [editorData, setEditorData] = useState(null)
+  const [shouldGzip, setShouldGzip] = useState(false)
+  const [lastFileName, setLastFileName] = useState(null)
+  const [isEncryptionWarning, setIsEncryptionWarning] = useState(false)
+  const { isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure()
+  const { isOpen: isEditorOpen, onOpen: onEditorOpen, onClose: onEditorClose } = useDisclosure()
 
   const onOpen = (encryption) => {
-    if (encryption)
-      setIsEncryptionWarning(true);
+    if (encryption) { setIsEncryptionWarning(true) }
 
-    _onOpen();
-  };
+    _onOpen()
+  }
 
   const onClose = () => {
-    _onClose();
-    setIsEncryptionWarning(false);
-  };
+    _onClose()
+    setIsEncryptionWarning(false)
+  }
 
   const setDownloadData = (data, fileName) => {
-    const blobUrl = window.URL.createObjectURL(new Blob([data], { type: 'binary/octet-stream' }));
-    const downloader = document.getElementById('downloader');
-    downloader.href = blobUrl;
-    downloader.download = fileName;
-  };
+    const blobUrl = window.URL.createObjectURL(new Blob([data], { type: 'binary/octet-stream' }))
+    const downloader = document.getElementById('downloader')
+    downloader.href = blobUrl
+    downloader.download = fileName
+  }
 
   const download = () => {
-    setData(null);
-    saveFileRef.current.value = '';
+    setData(null)
+    saveFileRef.current.value = ''
 
-    const downloader = document.getElementById('downloader');
-    downloader.click();
-    window.URL.revokeObjectURL(downloader.href);
-  };
+    const downloader = document.getElementById('downloader')
+    downloader.click()
+    window.URL.revokeObjectURL(downloader.href)
+  }
 
   return (
     <>
@@ -123,30 +119,30 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           ref={saveFileRef}
           disabled={isLoading}
           onChange={changeEvent => {
-            const files = changeEvent.target.files;
-            if (typeof gtag != 'undefined')
-              gtag('event', 'pick_file', { 'file_name': files[0] ? files[0].name : '', 'is_encryption': isEncryption, 'should_gzip': shouldGzip });
+            const files = changeEvent.target.files
+            if (typeof gtag !== 'undefined') { gtag('event', 'pick_file', { file_name: files[0] ? files[0].name : '', is_encryption: isEncryption, should_gzip: shouldGzip }) }
 
             if (!files.length) {
-              setData(null);
-              return;
+              setData(null)
+              return
             }
 
-            const fileReader = new FileReader();
-            fileReader.onload = loadEvent => setData(Buffer.from(loadEvent.target.result));
+            const fileReader = new FileReader()
+            fileReader.onload = loadEvent => setData(Buffer.from(loadEvent.target.result))
             fileReader.onerror = e => {
-              console.error(e);
+              console.error(e)
               toaster.create({
                 title: 'Failed processing the save file',
                 description: 'Please try choosing the save file again',
                 type: 'error',
                 duration: 2500,
-                closable: true});
-            };
+                closable: true
+              })
+            }
 
-            const file = files[0];
-            setLastFileName(file.name);
-            fileReader.readAsArrayBuffer(file);
+            const file = files[0]
+            setLastFileName(file.name)
+            fileReader.readAsArrayBuffer(file)
           }}
         />
         {isEncryption && (
@@ -154,17 +150,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             disabled={isLoading}
             isChecked={shouldGzip}
             onChange={e => {
-              if (!e.target.checked)
-                setShouldGzip(false);
-              else
-                onOpen(true);
+              if (!e.target.checked) { setShouldGzip(false) } else { onOpen(true) }
             }}
           >
             GZip
           </Checkbox>
         )}
       </Box>
-      <div width='100%'></div>
+      <div width='100%' />
 
       {!isEncryption && (
         <Button
@@ -173,44 +166,46 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           width='100%' mt='2'
           display='block'
           onClick={async () => {
-            if (typeof gtag != 'undefined')
-              gtag('event', 'editor_open');
-            
+            if (typeof gtag !== 'undefined') { gtag('event', 'editor_open') }
+
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
               toaster.create({
                 title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
                 description: !data ? 'No file chosen' : 'No password provided',
                 type: 'error',
                 duration: 2000,
-                closable: true});
-  
-              return;
+                closable: true
+              })
+
+              return
             }
 
-            setIsLoading(true);
+            setIsLoading(true)
 
-            let decryptedData;
+            let decryptedData
             try {
-              decryptedData = await cryptData(data, password, false);
+              decryptedData = await cryptData(data, password, false)
             } catch (e) {
-              console.error(e);
+              console.error(e)
               toaster.create({
                 title: 'Failed decrypting the save file',
                 description: 'Wrong decryption password? Try leaving the password field empty.',
                 type: 'error',
                 duration: 3500,
-                closable: true});
-              
-              setIsLoading(false);
-              return;
+                closable: true
+              })
+
+              setIsLoading(false)
+              return
             }
 
             if (!isJSON(decryptedData.cryptedData)) {
-              if (typeof gtag != 'undefined')
+              if (typeof gtag !== 'undefined') {
                 gtag('event', 'editor_malformed_data', {
-                  'decrypted_data': decryptedData.cryptedData.toString().slice(0, 75),
-                  'parse_error': getJSONParseError(decryptedData.cryptedData).message
-                });
+                  decrypted_data: decryptedData.cryptedData.toString().slice(0, 75),
+                  parse_error: getJSONParseError(decryptedData.cryptedData).message
+                })
+              }
 
               toaster.create({
                 title: 'Can\'t open editor',
@@ -222,15 +217,16 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                 ),
                 type: 'error',
                 duration: 5000,
-                closable: true});
-              
-              setIsLoading(false);
-              return;
+                closable: true
+              })
+
+              setIsLoading(false)
+              return
             }
 
-            setEditorData({ wasGunzipped: decryptedData.wasGunzipped, data: decryptedData.cryptedData });
-            onEditorOpen();
-            setIsLoading(false);
+            setEditorData({ wasGunzipped: decryptedData.wasGunzipped, data: decryptedData.cryptedData })
+            onEditorOpen()
+            setIsLoading(false)
           }}
         >
           EXPERIMENTAL! Open editor
@@ -245,97 +241,93 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
         isLoading={isLoading}
         loadingText={`${isEncryption ? 'Encrypting' : 'Decrypting'} the save file...`}
         onClick={async () => {
-          if (typeof gtag != 'undefined')
-            gtag('event', 'download_file', { 'is_encryption': isEncryption, 'should_gzip': shouldGzip });
+          if (typeof gtag !== 'undefined') { gtag('event', 'download_file', { is_encryption: isEncryption, should_gzip: shouldGzip }) }
 
-          if (!data || (isEncryption ?  (!password && !shouldGzip) : (!password && !isGzip(data)))) {
+          if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data)))) {
             toaster.create({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: !data ? 'No file chosen' : 'No password provided',
               type: 'error',
               duration: 2000,
-              closable: true});
+              closable: true
+            })
 
-            return;
+            return
           }
 
-          
-          setIsLoading(true);
+          setIsLoading(true)
 
-          let fileName = isEncryption ? 'SaveFile.encrypted.txt' : 'SaveFile.decrypted.txt';
-          let wasGunzipped = false;
-          let cryptedData;
+          const fileName = isEncryption ? 'SaveFile.encrypted.txt' : 'SaveFile.decrypted.txt'
+          let wasGunzipped = false
+          let cryptedData
           try {
-            let result = await cryptData(data, password, isEncryption, shouldGzip);
-            wasGunzipped = result.wasGunzipped;
-            cryptedData = result.cryptedData;
+            const result = await cryptData(data, password, isEncryption, shouldGzip)
+            wasGunzipped = result.wasGunzipped
+            cryptedData = result.cryptedData
           } catch (e) {
-            console.error(e);
+            console.error(e)
             toaster.create({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: isEncryption ? 'Internal error' : 'Wrong decryption password? Try leaving the password field empty.',
               type: 'error',
               duration: 3500,
-              closable: true});
-            
-            setIsLoading(false);
-            return;
+              closable: true
+            })
+
+            setIsLoading(false)
+            return
           }
 
-          setDownloadData(cryptedData, fileName);
-          if (wasGunzipped)
-            onOpen();
-          else
-            download();
+          setDownloadData(cryptedData, fileName)
+          if (wasGunzipped) { onOpen() } else { download() }
 
-          setIsLoading(false);
+          setIsLoading(false)
         }}
       >
         Download {isEncryption ? 'encrypted' : 'decrypted'} save file
       </Button>
 
-      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
+      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose() }}>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-  <Dialog.Content>
-          <Dialog.Header color='orange'>
-  <Dialog.Title>Warning!</Dialog.Title>
-</Dialog.Header>
-          <Dialog.CloseTrigger asChild>
-  <CloseButton />
-</Dialog.CloseTrigger>
-          <Dialog.Body>
-            {isEncryptionWarning ? (
-              <Text>
-                You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
-                If you GZip a save file that isn&apos;t supposed to be GZipped, the game might not recognize it and might delete it.
-              </Text>
-            ) : (
-              <Text>
-                Your save file was also GUnZipped (decompressed). This means that when you are done editing your save file
-                and want to re-encrypt it, you will have to check the GZip checkbox before so the file can also be re-compressed.
-                Unless you check the box, the save file might not be recognized by the game and might be deleted.
-              </Text>
-            )}
-          </Dialog.Body>
+          <Dialog.Content>
+            <Dialog.Header color='orange'>
+              <Dialog.Title>Warning!</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.CloseTrigger asChild>
+              <CloseButton />
+            </Dialog.CloseTrigger>
+            <Dialog.Body>
+              {isEncryptionWarning
+                ? (
+                  <Text>
+                    You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
+                    If you GZip a save file that isn&apos;t supposed to be GZipped, the game might not recognize it and might delete it.
+                  </Text>
+                  )
+                : (
+                  <Text>
+                    Your save file was also GUnZipped (decompressed). This means that when you are done editing your save file
+                    and want to re-encrypt it, you will have to check the GZip checkbox before so the file can also be re-compressed.
+                    Unless you check the box, the save file might not be recognized by the game and might be deleted.
+                  </Text>
+                  )}
+            </Dialog.Body>
 
-          <Dialog.Footer>
-            <Button
-              colorScheme='teal'
-              onClick={() => {
-                if (isEncryptionWarning)
-                  setShouldGzip(true);
-                else
-                  download();
+            <Dialog.Footer>
+              <Button
+                colorScheme='teal'
+                onClick={() => {
+                  if (isEncryptionWarning) { setShouldGzip(true) } else { download() }
 
-                onClose();
-              }}
-            >
-              Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
-            </Button>
-          </Dialog.Footer>
-        </Dialog.Content>
-</Dialog.Positioner>
+                  onClose()
+                }}
+              >
+                Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
       </Dialog.Root>
 
       {!isEncryption && (
@@ -347,31 +339,31 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           data={editorData}
           setData={setEditorData}
           saveData={async () => {
-            if (typeof gtag != 'undefined')
-              gtag('event', 'editor_save');
+            if (typeof gtag !== 'undefined') { gtag('event', 'editor_save') }
 
-            let cryptedData;
+            let cryptedData
             try {
-              let result = await cryptData(editorData.data, password, true, editorData.wasGunzipped);
-              cryptedData = result.cryptedData;
+              const result = await cryptData(editorData.data, password, true, editorData.wasGunzipped)
+              cryptedData = result.cryptedData
             } catch (e) {
-              console.error(e);
+              console.error(e)
               toaster.create({
-                title: `Failed encrypting the edited save file`,
+                title: 'Failed encrypting the edited save file',
                 description: 'Internal error',
                 type: 'error',
                 duration: 3500,
-                closable: true});
+                closable: true
+              })
 
-              return false;
+              return false
             }
 
-            setDownloadData(cryptedData, lastFileName);
-            download();
-            return true;
+            setDownloadData(cryptedData, lastFileName)
+            download()
+            return true
           }}
         />
       )}
     </>
-  );
+  )
 }

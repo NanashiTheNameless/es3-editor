@@ -1,16 +1,15 @@
-import {Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton, Dialog, Portal } from '@chakra-ui/react';
-import { forwardRef } from 'react';
-import { useEffect, useState } from 'react';
-import Head from 'next/head';
+import { Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton, Dialog, Portal } from '@chakra-ui/react'
+import { forwardRef, useEffect, useState } from 'react'
+import Head from 'next/head'
 
-import CryptForm from '../components/cryptForm';
-import Footer from '../components/footer';
-import passwords from '../passwords';
+import CryptForm from '../components/cryptForm'
+import Footer from '../components/footer'
+import passwords from '../passwords'
 
-export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [password, setPassword] = useState('');
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function Home () {
+  const [isLoading, setIsLoading] = useState(false)
+  const [password, setPassword] = useState('')
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
@@ -27,7 +26,7 @@ export default function Home() {
         />
       </Head>
 
-      <a id='downloader' style={{ display: 'none' }}></a>
+      <a id='downloader' style={{ display: 'none' }} />
       <Flex alignItems='center' justifyContent='center' mt='24' mb='14'>
         <Box
           direction='column'
@@ -44,10 +43,9 @@ export default function Home() {
               value={password}
               placeholder='a1bc2d3fghi4...'
               onChange={e => {
-                if (typeof gtag != 'undefined')
-                  gtag('event', 'change_password', { password: e.target.value });
+                if (typeof gtag !== 'undefined') { gtag('event', 'change_password', { password: e.target.value }) }
 
-                setPassword(e.target.value);
+                setPassword(e.target.value)
               }}
               disabled={isLoading}
             />
@@ -57,10 +55,9 @@ export default function Home() {
               colorScheme='red'
               icon={<CloseButton />}
               onClick={() => {
-                if (typeof gtag != 'undefined')
-                  gtag('event', 'clear_password', { 'previous_password': password });
+                if (typeof gtag !== 'undefined') { gtag('event', 'clear_password', { previous_password: password }) }
 
-                setPassword('');
+                setPassword('')
               }}
             />
           </Box>
@@ -69,10 +66,9 @@ export default function Home() {
           <Button
             mt='2' colorScheme='teal'
             onClick={() => {
-              if (typeof gtag != 'undefined')
-                gtag('event', 'open_known_passwords', { password });
+              if (typeof gtag !== 'undefined') { gtag('event', 'open_known_passwords', { password }) }
 
-              onOpen();
+              onOpen()
             }}
           >
             Known game passwords
@@ -93,59 +89,59 @@ export default function Home() {
 
       <Footer />
 
-      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
+      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose() }}>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-  <Dialog.Content>
-          <Dialog.Header>
-  <Dialog.Title>Known game passwords</Dialog.Title>
-</Dialog.Header>
-          <Dialog.CloseTrigger asChild>
-  <CloseButton />
-</Dialog.CloseTrigger>
-          <Dialog.Body>
-            {passwords.map(({ gameName, password }, index) => (
-              <Box key={index}>
-                {index !== 0 && <Separator my='2' />}
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                >
-                  <Code
-                    maxW="80%"
-                    whiteSpace='normal'
-                    overflowWrap='break-word'
-                    wordBreak='break-word'
-                  >{password}</Code>
-                  <Text ml='auto'>{gameName}</Text>
-                  <Button
-                    ml='3' colorScheme='teal'
-                    onClick={() => {
-                      if (typeof gtag != 'undefined')
-                        gtag('event', 'use_password', { 'game_name': gameName, password });
-
-                      setPassword(password);
-                      onClose();
-                    }}
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Known game passwords</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.CloseTrigger asChild>
+              <CloseButton />
+            </Dialog.CloseTrigger>
+            <Dialog.Body>
+              {passwords.map(({ gameName, password }, index) => (
+                <Box key={index}>
+                  {index !== 0 && <Separator my='2' />}
+                  <Box
+                    display='flex'
+                    flexDirection='row'
+                    alignItems='center'
                   >
-                    Use
-                  </Button>
-                </Box>
-              </Box>
-            ))}
-            <Text mt='5'>Can&apos;t find your game here?</Text>
-            <Text>Try decrypting it without a password.</Text>
-          </Dialog.Body>
+                    <Code
+                      maxW='80%'
+                      whiteSpace='normal'
+                      overflowWrap='break-word'
+                      wordBreak='break-word'
+                    >{password}
+                    </Code>
+                    <Text ml='auto'>{gameName}</Text>
+                    <Button
+                      ml='3' colorScheme='teal'
+                      onClick={() => {
+                        if (typeof gtag !== 'undefined') { gtag('event', 'use_password', { game_name: gameName, password }) }
 
-          <Dialog.Footer>
-            <Button onClick={onClose}>
-              Ok
-            </Button>
-          </Dialog.Footer>
-        </Dialog.Content>
-</Dialog.Positioner>
+                        setPassword(password)
+                        onClose()
+                      }}
+                    >
+                      Use
+                    </Button>
+                  </Box>
+                </Box>
+              ))}
+              <Text mt='5'>Can&apos;t find your game here?</Text>
+              <Text>Try decrypting it without a password.</Text>
+            </Dialog.Body>
+
+            <Dialog.Footer>
+              <Button onClick={onClose}>
+                Ok
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
       </Dialog.Root>
     </>
-  );
+  )
 }

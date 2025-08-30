@@ -6,37 +6,37 @@ import { ThemeProvider, useTheme } from 'next-themes'
 import * as React from 'react'
 import { LuMoon, LuSun } from 'react-icons/lu'
 
-export function ColorModeProvider(props) {
+export function ColorModeProvider (props) {
   return (
     <ThemeProvider attribute='class' disableTransitionOnChange {...props} />
   )
 }
 
-export function useColorMode() {
+export function useColorMode () {
   const { resolvedTheme, setTheme, forcedTheme } = useTheme()
   const colorMode = forcedTheme || resolvedTheme
   const toggleColorMode = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
   }
   return {
-    colorMode: colorMode,
+    colorMode,
     setColorMode: setTheme,
-    toggleColorMode,
+    toggleColorMode
   }
 }
 
-export function useColorModeValue(light, dark) {
+export function useColorModeValue (light, dark) {
   const { colorMode } = useColorMode()
   return colorMode === 'dark' ? dark : light
 }
 
-export function ColorModeIcon() {
+export function ColorModeIcon () {
   const { colorMode } = useColorMode()
   return colorMode === 'dark' ? <LuMoon /> : <LuSun />
 }
 
 export const ColorModeButton = React.forwardRef(
-  function ColorModeButton(props, ref) {
+  function ColorModeButton (props, ref) {
     const { toggleColorMode } = useColorMode()
     return (
       <ClientOnly fallback={<Skeleton boxSize='8' />}>
@@ -50,18 +50,18 @@ export const ColorModeButton = React.forwardRef(
           css={{
             _icon: {
               width: '5',
-              height: '5',
-            },
+              height: '5'
+            }
           }}
         >
           <ColorModeIcon />
         </IconButton>
       </ClientOnly>
     )
-  },
+  }
 )
 
-export const LightMode = React.forwardRef(function LightMode(props, ref) {
+export const LightMode = React.forwardRef(function LightMode (props, ref) {
   return (
     <Span
       color='fg'
@@ -75,7 +75,7 @@ export const LightMode = React.forwardRef(function LightMode(props, ref) {
   )
 })
 
-export const DarkMode = React.forwardRef(function DarkMode(props, ref) {
+export const DarkMode = React.forwardRef(function DarkMode (props, ref) {
   return (
     <Span
       color='fg'

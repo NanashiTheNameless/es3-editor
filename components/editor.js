@@ -1,87 +1,83 @@
-import {Box, Button, CloseButton, Dialog, Portal} from '@chakra-ui/react';
-import JSONEditor from 'jsoneditor';
-import { useRef, useEffect, useCallback, useState } from 'react';
-import 'jsoneditor/dist/jsoneditor.min.css';
+import { Box, Button, CloseButton, Dialog, Portal } from '@chakra-ui/react'
+import JSONEditor from 'jsoneditor'
+import { useRef, useEffect, useCallback, useState } from 'react'
+import 'jsoneditor/dist/jsoneditor.min.css'
 
-import Footer from './footer';
+import Footer from './footer'
 
-export default function Editor({ isLoading, setIsLoading, isOpen, onClose, data, setData, saveData }) {
-  const [editorContainer, setEditorContainer] = useState(null);
-  const [editor, setEditor] = useState(null);
+export default function Editor ({ isLoading, setIsLoading, isOpen, onClose, data, setData, saveData }) {
+  const [editorContainer, setEditorContainer] = useState(null)
+  const [editor, setEditor] = useState(null)
 
   useEffect(() => {
-    if (!editorContainer || !data)
-      return;
+    if (!editorContainer || !data) { return }
 
     const editor = new JSONEditor(editorContainer, {
-      mode: isLoading ? 'view': 'tree',
+      mode: isLoading ? 'view' : 'tree',
       onChangeText: newData => {
-        setData({ ...data, data: Buffer.from(newData) });
+        setData({ ...data, data: Buffer.from(newData) })
       }
-    });
+    })
 
-    setEditor(editor);
-    editor.set(JSON.parse(data.data.toString()));
+    setEditor(editor)
+    editor.set(JSON.parse(data.data.toString()))
 
     return () => {
-      setEditor(null);
-      editor.destroy();
-    };
-  }, [editorContainer]);
+      setEditor(null)
+      editor.destroy()
+    }
+  }, [editorContainer])
 
   useEffect(() => {
-    if (!editor)
-      return;
+    if (!editor) { return }
 
-    editor.setMode(isLoading ? 'view' : 'tree');
-  }, [isLoading]);
+    editor.setMode(isLoading ? 'view' : 'tree')
+  }, [isLoading])
 
   const editorContainerRef = useCallback(node => {
-    if (node)
-      setEditorContainer(node);
-  }, []);
+    if (node) { setEditorContainer(node) }
+  }, [])
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
+    <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose() }}>
       <Dialog.Backdrop />
       <Dialog.Positioner>
-  <Dialog.Content>
-        <Dialog.Header>
-  <Dialog.Title>Editor</Dialog.Title>
-</Dialog.Header>
-        <Dialog.Body mt='5'>
-          <div ref={editorContainerRef}></div>
-        </Dialog.Body>
-        <Dialog.Footer>
-          <Footer left />
-          <Button
-            colorScheme='orange'
-            isDisabled={isLoading}
-            onClick={async () => {
-              setIsLoading(true);
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Editor</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body mt='5'>
+            <div ref={editorContainerRef} />
+          </Dialog.Body>
+          <Dialog.Footer>
+            <Footer left />
+            <Button
+              colorScheme='orange'
+              isDisabled={isLoading}
+              onClick={async () => {
+                setIsLoading(true)
 
-              const isSaveSuccess = await saveData();
-              setIsLoading(false);
+                const isSaveSuccess = await saveData()
+                setIsLoading(false)
 
-              if (isSaveSuccess)
-                onClose();
-            }}
-          >
-            Save
-          </Button>
-          <Button
-            ml='3'
-            onClick={() => {
-              setData(null);
-              onClose();
-            }}
-            isDisabled={isLoading}
-          >
-            Close
-          </Button>
-        </Dialog.Footer>
-      </Dialog.Content>
-</Dialog.Positioner>
+                if (isSaveSuccess) { onClose() }
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              ml='3'
+              onClick={() => {
+                setData(null)
+                onClose()
+              }}
+              isDisabled={isLoading}
+            >
+              Close
+            </Button>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Positioner>
     </Dialog.Root>
-  );
+  )
 }
