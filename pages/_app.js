@@ -1,4 +1,5 @@
-import { ChakraProvider, defaultSystem, Alert, AlertIcon, AlertTitle, AlertDescription, Link, Box } from '@chakra-ui/react';
+import { ChakraProvider, defaultSystem, Link, Box } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
 import Head from 'next/head';
 import './editor.css';
 
