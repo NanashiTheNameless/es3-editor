@@ -1,5 +1,23 @@
-import {Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton, Dialog, Portal } from '@chakra-ui/react';
-import { forwardRef } from 'react';
+import {
+  Box,
+  Code,
+  Divider,
+  Flex,
+  Heading,
+  Input,
+  Text,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  IconButton
+} from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -16,7 +34,7 @@ export default function Home() {
     <>
       <Head>
         <meta property='og:title' content={'EasySave3 Editor | Modify your favorite games\' save files!'} />
-        <meta property='og:url' content='https://es3.namelessnanashi.dev/' />
+        <meta property='og:url' content='https://es3.lol/' />
         <meta
           name='og:description'
           content='EasySave3 Editor helps you empower your gaming journey with effortless save file editing. Seamlessly modify, and manage EasySave3 game saves with a user-friendly web application designed to enhance your gaming experience.'
@@ -55,7 +73,7 @@ export default function Home() {
               ml='3'
               variant='outline'
               colorScheme='red'
-              icon={<CloseButton />}
+              icon={<CloseIcon />}
               onClick={() => {
                 if (typeof gtag != 'undefined')
                   gtag('event', 'clear_password', { 'previous_password': password });
@@ -78,14 +96,14 @@ export default function Home() {
             Known game passwords
           </Button>
 
-          <Separator mt='8' mb='3' />
+          <Divider mt='8' mb='3' />
           <Heading size='md' mb='3'>Decryption</Heading>
           <CryptForm isLoading={isLoading} setIsLoading={setIsLoading} password={password} />
           <Text mt='5'>Some games might not encrypt their save files and</Text>
           <Text>only compress them using GZip. In this case, you</Text>
           <Text>don&apos;t have to provide a password.</Text>
 
-          <Separator mt='5' mb='3' />
+          <Divider mt='5' mb='3' />
           <Heading size='md' mb='3'>Encryption</Heading>
           <CryptForm isLoading={isLoading} setIsLoading={setIsLoading} password={password} isEncryption />
         </Box>
@@ -93,20 +111,20 @@ export default function Home() {
 
       <Footer />
 
-      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-  <Dialog.Content>
-          <Dialog.Header>
-  <Dialog.Title>Known game passwords</Dialog.Title>
-</Dialog.Header>
-          <Dialog.CloseTrigger asChild>
-  <CloseButton />
-</Dialog.CloseTrigger>
-          <Dialog.Body>
+      <Modal
+        blockScrollOnMount={false}
+        isOpen={isOpen} onClose={onClose}
+        scrollBehavior='inside' isCentered
+        size='7xl'
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Known game passwords</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
             {passwords.map(({ gameName, password }, index) => (
               <Box key={index}>
-                {index !== 0 && <Separator my='2' />}
+                {index !== 0 && <Divider my='2' />}
                 <Box
                   display="flex"
                   flexDirection="row"
@@ -136,16 +154,15 @@ export default function Home() {
             ))}
             <Text mt='5'>Can&apos;t find your game here?</Text>
             <Text>Try decrypting it without a password.</Text>
-          </Dialog.Body>
+          </ModalBody>
 
-          <Dialog.Footer>
+          <ModalFooter>
             <Button onClick={onClose}>
               Ok
             </Button>
-          </Dialog.Footer>
-        </Dialog.Content>
-</Dialog.Positioner>
-      </Dialog.Root>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }

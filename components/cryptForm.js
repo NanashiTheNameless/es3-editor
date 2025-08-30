@@ -1,6 +1,19 @@
-import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal} from '@chakra-ui/react';
-import { Toaster, toaster } from "@/components/ui/toaster";
-import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/alert';
+import {
+  Box,
+  Button,
+  Text,
+  Link,
+  Checkbox,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
+} from '@chakra-ui/react';
 import { FaDownload, FaEdit } from 'react-icons/fa';
 import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -77,7 +90,7 @@ async function cryptData(data, password, isEncryption, shouldGzip) {
 }
 
 export default function CryptForm({ isEncryption, isLoading, setIsLoading, password }) {
-
+  const toast = useToast();
   const saveFileRef = useRef();
   const [data, setData] = useState(null);
   const [editorData, setEditorData] = useState(null);
@@ -136,12 +149,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             fileReader.onload = loadEvent => setData(Buffer.from(loadEvent.target.result));
             fileReader.onerror = e => {
               console.error(e);
-              toaster.create({
+              toast({
                 title: 'Failed processing the save file',
                 description: 'Please try choosing the save file again',
-                type: 'error',
+                status: 'error',
                 duration: 2500,
-                closable: true});
+                isClosable: true,
+                position: 'bottom-left'
+              });
             };
 
             const file = files[0];
@@ -177,12 +192,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               gtag('event', 'editor_open');
             
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
-              toaster.create({
+              toast({
                 title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
                 description: !data ? 'No file chosen' : 'No password provided',
-                type: 'error',
+                status: 'error',
                 duration: 2000,
-                closable: true});
+                isClosable: true,
+                position: 'bottom-left'
+              });
   
               return;
             }
@@ -194,12 +211,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               decryptedData = await cryptData(data, password, false);
             } catch (e) {
               console.error(e);
-              toaster.create({
+              toast({
                 title: 'Failed decrypting the save file',
                 description: 'Wrong decryption password? Try leaving the password field empty.',
-                type: 'error',
+                status: 'error',
                 duration: 3500,
-                closable: true});
+                isClosable: true,
+                position: 'bottom-left'
+              });
               
               setIsLoading(false);
               return;
@@ -212,7 +231,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                   'parse_error': getJSONParseError(decryptedData.cryptedData).message
                 });
 
-              toaster.create({
+              toast({
                 title: 'Can\'t open editor',
                 description: (
                   <>
@@ -220,9 +239,11 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                     <Text>Download the file and edit it manually.</Text>
                   </>
                 ),
-                type: 'error',
+                status: 'error',
                 duration: 5000,
-                closable: true});
+                isClosable: true,
+                position: 'bottom-left'
+              });
               
               setIsLoading(false);
               return;
@@ -249,12 +270,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             gtag('event', 'download_file', { 'is_encryption': isEncryption, 'should_gzip': shouldGzip });
 
           if (!data || (isEncryption ?  (!password && !shouldGzip) : (!password && !isGzip(data)))) {
-            toaster.create({
+            toast({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: !data ? 'No file chosen' : 'No password provided',
-              type: 'error',
+              status: 'error',
               duration: 2000,
-              closable: true});
+              isClosable: true,
+              position: 'bottom-left'
+            });
 
             return;
           }
@@ -271,12 +294,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             cryptedData = result.cryptedData;
           } catch (e) {
             console.error(e);
-            toaster.create({
+            toast({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: isEncryption ? 'Internal error' : 'Wrong decryption password? Try leaving the password field empty.',
-              type: 'error',
+              status: 'error',
               duration: 3500,
-              closable: true});
+              isClosable: true,
+              position: 'bottom-left'
+            });
             
             setIsLoading(false);
             return;
@@ -294,17 +319,16 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
         Download {isEncryption ? 'encrypted' : 'decrypted'} save file
       </Button>
 
-      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-  <Dialog.Content>
-          <Dialog.Header color='orange'>
-  <Dialog.Title>Warning!</Dialog.Title>
-</Dialog.Header>
-          <Dialog.CloseTrigger asChild>
-  <CloseButton />
-</Dialog.CloseTrigger>
-          <Dialog.Body>
+      <Modal
+        blockScrollOnMount={false}
+        isOpen={isOpen} onClose={onClose}
+        scrollBehavior='inside' isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color='orange'>Warning!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
             {isEncryptionWarning ? (
               <Text>
                 You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
@@ -317,9 +341,9 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                 Unless you check the box, the save file might not be recognized by the game and might be deleted.
               </Text>
             )}
-          </Dialog.Body>
+          </ModalBody>
 
-          <Dialog.Footer>
+          <ModalFooter>
             <Button
               colorScheme='teal'
               onClick={() => {
@@ -333,10 +357,9 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             >
               Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
             </Button>
-          </Dialog.Footer>
-        </Dialog.Content>
-</Dialog.Positioner>
-      </Dialog.Root>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
       {!isEncryption && (
         <Editor
@@ -356,12 +379,14 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               cryptedData = result.cryptedData;
             } catch (e) {
               console.error(e);
-              toaster.create({
+              toast({
                 title: `Failed encrypting the edited save file`,
                 description: 'Internal error',
-                type: 'error',
+                status: 'error',
                 duration: 3500,
-                closable: true});
+                isClosable: true,
+                position: 'bottom-left'
+              });
 
               return false;
             }

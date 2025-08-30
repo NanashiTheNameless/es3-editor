@@ -8,7 +8,7 @@ export default function Footer({ left }) {
     <Box position='fixed' bottom={offset} left={left ? offset : undefined} right={left ? undefined : offset} textAlign={left ? 'left' : 'right'}>
       <Link as={NextLink} href='/terms-of-service' color='blue.500' mr='6.5px'>Terms of Service</Link>
       <Link as={NextLink} href='/privacy-policy' color='blue.500'>Privacy Policy</Link>
-      <Text>This fork is made by <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='blue.500'>NamelessNanashi</Link></Text>
+      <Text>Made with <span style={{ color: 'red' }}>♥</span> by <Link as={NextLink} href='https://alex.tusinean.ro' color='blue.500'>Alex Tușinean</Link></Text>
     </Box>
   );
 }
