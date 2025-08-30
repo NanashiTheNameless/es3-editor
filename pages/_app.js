@@ -1,5 +1,7 @@
 import { ChakraProvider, defaultSystem, Link, Box, Alert } from '@chakra-ui/react'
 import Head from 'next/head'
+import { ThemeProvider } from 'next-themes'
+import { Toaster } from '@/components/ui/toaster'
 import './editor.css'
 
 export default function App ({ Component, pageProps }) {
@@ -17,7 +19,8 @@ export default function App ({ Component, pageProps }) {
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
 
-      <ChakraProvider value={defaultSystem}>
+      <ThemeProvider attribute='class' defaultTheme='dark'>
+        <ChakraProvider value={defaultSystem}>
         <Box position='fixed' zIndex='9999' width='100%' top='0'>
           <Alert.Root status='info' variant='solid'>
             <Alert.Indicator />
@@ -29,8 +32,10 @@ export default function App ({ Component, pageProps }) {
             </Alert.Content>
           </Alert.Root>
         </Box>
+        <Toaster />
         <Component {...pageProps} />
-      </ChakraProvider>
+              </ChakraProvider>
+      </ThemeProvider>
     </>
   )
 }
