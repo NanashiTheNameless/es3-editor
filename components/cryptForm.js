@@ -1,5 +1,5 @@
 import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal } from '@chakra-ui/react'
-import { toaster } from '@/components/ui/toaster'
+import toaster from '@/components/ui/toaster'
 import { FaDownload, FaEdit } from 'react-icons/fa'
 import { useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
