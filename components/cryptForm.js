@@ -1,5 +1,4 @@
-import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog } from '@chakra-ui/react'
-import { Portal } from "@chakra-ui/react"
+import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal } from '@chakra-ui/react'
 import { Toaster } from '@/components/ui/toaster'
 import { FaDownload, FaEdit } from 'react-icons/fa'
 import { useRef, useState } from 'react'
