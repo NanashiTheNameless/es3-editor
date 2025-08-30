@@ -115,7 +115,7 @@ export default function Home() {
         blockScrollOnMount={false}
         isOpen={isOpen} onClose={onClose}
         scrollBehavior='inside' isCentered
-        size='5xl'
+        size='7xl'
       >
         <ModalOverlay />
         <ModalContent>
@@ -125,8 +125,17 @@ export default function Home() {
             {passwords.map(({ gameName, password }, index) => (
               <Box key={index}>
                 {index !== 0 && <Divider my='2' />}
-                <Box display='flex' flexDirection='row' alignItems='center'>
-                  <Code>{password}</Code>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                >
+                  <Code
+                    maxW="80%"
+                    whiteSpace='normal'
+                    overflowWrap='break-word'
+                    wordBreak='break-word'
+                  >{password}</Code>
                   <Text ml='auto'>{gameName}</Text>
                   <Button
                     ml='3' colorScheme='teal'
