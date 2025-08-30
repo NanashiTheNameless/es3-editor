@@ -1,4 +1,5 @@
-import { Box, Button, CloseButton, Dialog, Portal } from '@chakra-ui/react'
+import { Box, Button, CloseButton, Dialog } from '@chakra-ui/react'
+import { Portal } from "@chakra-ui/react"
 import JSONEditor from 'jsoneditor'
 import { useRef, useEffect, useCallback, useState } from 'react'
 import 'jsoneditor/dist/jsoneditor.min.css'
