@@ -1,4 +1,4 @@
-import { ChakraProvider, defaultSystem, Link, Box, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react'
+import { ChakraProvider, defaultSystem, Link, Box, Alert } from '@chakra-ui/react'
 import Head from 'next/head'
 import './editor.css'
 
@@ -20,7 +20,7 @@ export default function App ({ Component, pageProps }) {
       <ChakraProvider value={defaultSystem}>
         <Box position='fixed' zIndex='9999' width='100%' top='0'>
           <Alert.Root status='info' variant='solid'>
-            <Alert.Indicator />
+            <Alert.Icon />
             <Alert.Content>
               <Alert.Title>This tool is free and open source!</Alert.Title>
               <Alert.Description>
