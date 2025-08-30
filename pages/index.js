@@ -1,4 +1,4 @@
-import { Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton } from '@chakra-ui/react'
+import { Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton, Dialog } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import Head from 'next/head'
 
