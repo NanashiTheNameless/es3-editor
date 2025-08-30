@@ -17,7 +17,7 @@ import {
   useDisclosure,
   IconButton
 } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseButton } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -73,7 +73,7 @@ export default function Home() {
               ml='3'
               variant='outline'
               colorScheme='red'
-              icon={<CloseIcon />}
+              icon={<CloseButton />}
               onClick={() => {
                 if (typeof gtag != 'undefined')
                   gtag('event', 'clear_password', { 'previous_password': password });
