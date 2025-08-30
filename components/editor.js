@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton
-} from '@chakra-ui/react';
+import {Box, Button, CloseButton, Dialog, Portal} from '@chakra-ui/react';
 import JSONEditor from 'jsoneditor';
 import { useRef, useEffect, useCallback, useState } from 'react';
 import 'jsoneditor/dist/jsoneditor.min.css';
@@ -52,14 +42,17 @@ export default function Editor({ isLoading, setIsLoading, isOpen, onClose, data,
   }, []);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size='full' mt='20'>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Editor</ModalHeader>
-        <ModalBody mt='5'>
+    <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+  <Dialog.Content>
+        <Dialog.Header>
+  <Dialog.Title>Editor</Dialog.Title>
+</Dialog.Header>
+        <Dialog.Body mt='5'>
           <div ref={editorContainerRef}></div>
-        </ModalBody>
-        <ModalFooter>
+        </Dialog.Body>
+        <Dialog.Footer>
           <Footer left />
           <Button
             colorScheme='orange'
@@ -86,8 +79,9 @@ export default function Editor({ isLoading, setIsLoading, isOpen, onClose, data,
           >
             Close
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </Dialog.Footer>
+      </Dialog.Content>
+</Dialog.Positioner>
+    </Dialog.Root>
   );
 }

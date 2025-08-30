@@ -1,19 +1,4 @@
-import {
-  Box,
-  Button,
-  Text,
-  Link,
-  Checkbox,
-  useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure
-} from '@chakra-ui/react';
+import {Box, Button, Text, Link, Checkbox, useToast, useDisclosure, CloseButton, Dialog, Portal} from '@chakra-ui/react';
 import { FaDownload, FaEdit } from 'react-icons/fa';
 import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -319,16 +304,17 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
         Download {isEncryption ? 'encrypted' : 'decrypted'} save file
       </Button>
 
-      <Modal
-        blockScrollOnMount={false}
-        isOpen={isOpen} onClose={onClose}
-        scrollBehavior='inside' isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color='orange'>Warning!</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
+      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+  <Dialog.Content>
+          <Dialog.Header color='orange'>
+  <Dialog.Title>Warning!</Dialog.Title>
+</Dialog.Header>
+          <Dialog.CloseTrigger asChild>
+  <CloseButton />
+</Dialog.CloseTrigger>
+          <Dialog.Body>
             {isEncryptionWarning ? (
               <Text>
                 You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
@@ -341,9 +327,9 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                 Unless you check the box, the save file might not be recognized by the game and might be deleted.
               </Text>
             )}
-          </ModalBody>
+          </Dialog.Body>
 
-          <ModalFooter>
+          <Dialog.Footer>
             <Button
               colorScheme='teal'
               onClick={() => {
@@ -357,9 +343,10 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             >
               Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </Dialog.Footer>
+        </Dialog.Content>
+</Dialog.Positioner>
+      </Dialog.Root>
 
       {!isEncryption && (
         <Editor

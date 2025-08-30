@@ -1,23 +1,4 @@
-import {
-  Box,
-  Code,
-  Separator,
-  Flex,
-  Heading,
-  Input,
-  Text,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  IconButton
-} from '@chakra-ui/react';
-import { CloseButton } from "@chakra-ui/react";
+import {Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton, Dialog, Portal} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -111,17 +92,17 @@ export default function Home() {
 
       <Footer />
 
-      <Modal
-        blockScrollOnMount={false}
-        isOpen={isOpen} onClose={onClose}
-        scrollBehavior='inside' isCentered
-        size='7xl'
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Known game passwords</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
+      <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose(); }}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+  <Dialog.Content>
+          <Dialog.Header>
+  <Dialog.Title>Known game passwords</Dialog.Title>
+</Dialog.Header>
+          <Dialog.CloseTrigger asChild>
+  <CloseButton />
+</Dialog.CloseTrigger>
+          <Dialog.Body>
             {passwords.map(({ gameName, password }, index) => (
               <Box key={index}>
                 {index !== 0 && <Separator my='2' />}
@@ -154,15 +135,16 @@ export default function Home() {
             ))}
             <Text mt='5'>Can&apos;t find your game here?</Text>
             <Text>Try decrypting it without a password.</Text>
-          </ModalBody>
+          </Dialog.Body>
 
-          <ModalFooter>
+          <Dialog.Footer>
             <Button onClick={onClose}>
               Ok
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </Dialog.Footer>
+        </Dialog.Content>
+</Dialog.Positioner>
+      </Dialog.Root>
     </>
   );
 }
