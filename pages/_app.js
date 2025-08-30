@@ -20,17 +20,19 @@ export default function App ({ Component, pageProps }) {
 
       <ChakraProvider value={defaultSystem}>
         <Box position='fixed' zIndex='9999' width='100%' top='0'>
-          <Alert
+          <Alert.Root
             status='info'
             alignItems='center'
             justifyContent='center'
             textAlign='center'
             variant='solid'
           >
-            <AlertIcon />
-            <AlertTitle>This tool is free and open source!</AlertTitle>
-            <AlertDescription>Consider checking out this forks source code on <Link href='https://github.com/NanashiTheNameless/es3-editor' color='blue' isExternal>GitHub</Link>.</AlertDescription>
-          </Alert>
+            <Alert.Icon />
+            <Alert.Title>This tool is free and open source!</Alert.Title>
+            <Alert.Description>
+              Consider checking out this fork’s source code on <Link href='https://github.com/NanashiTheNameless/es3-editor' color='blue' isExternal>GitHub</Link>.
+            </Alert.Description>
+          </Alert.Root>
         </Box>
         <Component {...pageProps} />
       </ChakraProvider>
