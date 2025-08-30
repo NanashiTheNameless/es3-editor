@@ -34,5 +34,6 @@ export default function App ({ Component, pageProps }) {
         </Box>
         <Component {...pageProps} />
               </ChakraProvider>
+      </ThemeProvider>
     </>
   );

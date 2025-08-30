@@ -2,6 +2,7 @@ import {
   Box,
   Code,
   Divider,
+  Separator,
   Flex,
   Heading,
   Input,
@@ -17,18 +18,19 @@ import {
   useDisclosure,
   IconButton
 } from '@chakra-ui/react';
+
 import { CloseIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
-import CryptForm from '@/components/cryptForm'
-import Footer from '@/components/footer'
-import passwords from '@/passwords.json'
+import CryptForm from '@/components/cryptForm';
+import Footer from '@/components/footer';
+import passwords from '@/passwords.json';
 
 export default function Home () {
-  const [isLoading, setIsLoading] = useState(false)
-  const [password, setPassword] = useState('')
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -62,7 +64,7 @@ export default function Home () {
               value={password}
               placeholder='a1bc2d3fghi4...'
               onChange={e => {
-                setPassword(e.target.value)
+                setPassword(e.target.value);
               }}
               disabled={isLoading}
             />
@@ -72,7 +74,7 @@ export default function Home () {
               colorScheme='red'
               icon={<CloseButton />}
               onClick={() => {
-                setPassword('')
+                setPassword('');
               }}
             />
           </Box>
@@ -81,8 +83,8 @@ export default function Home () {
           <Button
             mt='2' colorScheme='teal'
             onClick={() => {
-              onOpen()
-            }}
+              onOpen();
+            }};
           >
             Known game passwords
           </Button>
@@ -133,8 +135,8 @@ export default function Home () {
                         ml='3' colorScheme='teal'
                         onClick={() => {
                           setPassword(password)
-                          onClose()
-                        }}
+                          onClose();
+                        }};
                       >
                         Use
                       </Button>
@@ -153,5 +155,5 @@ export default function Home () {
         </ModalContent>
       </Modal>
     </>
-  )
+  );
 }

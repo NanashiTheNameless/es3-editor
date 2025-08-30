@@ -1,8 +1,8 @@
-import { Box, Flex, Text, Link } from '@chakra-ui/react'
-import NextLink from 'next/link'
-import Head from 'next/head'
+import { Box, Flex, Text, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import Head from 'next/head';
 
-const Dbr = () => (<><br /><br /></>)
+const Dbr = () => (<><br /><br /></>);
 
 export default function TermsOfService () {
   return (
@@ -69,5 +69,5 @@ export default function TermsOfService () {
         </Box>
       </Flex>
     </>
-  )
+  );
 }

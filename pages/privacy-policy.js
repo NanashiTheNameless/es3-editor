@@ -1,6 +1,6 @@
-import { Box, Flex, Text, Link } from '@chakra-ui/react'
-import NextLink from 'next/link'
-import Head from 'next/head'
+import { Box, Flex, Text, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import Head from 'next/head';
 
 export default function PrivacyPolicy () {
   return (
@@ -52,5 +52,5 @@ export default function PrivacyPolicy () {
         </Box>
       </Flex>
     </>
-  )
+  );
 }
