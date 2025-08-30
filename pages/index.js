@@ -35,15 +35,15 @@ export default function Home () {
   return (
     <>
       <Head>
-        <meta property='og:title' content={'EasySave3 Editor | Modify your favorite games\' save files!'} />
+        <meta property='og:title' content={'EasySave3 Editor (NamelessNanashi Fork) | Modify your favorite games\' save files!'} />
         <meta property='og:url' content='https://es3.namelessnanashi.dev/' />
         <meta
           name='og:description'
-          content='EasySave3 Editor helps you empower your gaming journey with effortless save file editing. Seamlessly modify, and manage EasySave3 game saves with a user-friendly web application designed to enhance your gaming experience.'
+          content='EasySave3 Editor (NamelessNanashi Fork) helps you empower your gaming journey with effortless save file editing. Seamlessly modify, and manage EasySave3 game saves with a user-friendly web application designed to enhance your gaming experience.'
         />
         <meta
           name='description'
-          content='EasySave3 Editor helps you empower your gaming journey with effortless save file editing. Seamlessly modify, and manage EasySave3 game saves with a user-friendly web application designed to enhance your gaming experience.'
+          content='EasySave3 Editor (NamelessNanashi Fork) helps you empower your gaming journey with effortless save file editing. Seamlessly modify, and manage EasySave3 game saves with a user-friendly web application designed to enhance your gaming experience.'
         />
       </Head>
 
@@ -56,7 +56,7 @@ export default function Home () {
           p='12'
           position='relative'
         >
-          <Heading mb='6'>EasySave3 Editor</Heading>
+          <Heading mb='6'>EasySave3 Editor (NamelessNanashi Fork)</Heading>
 
           <Text>Password</Text>
           <Box display='flex' flexDirection='row'>

@@ -9,15 +9,15 @@ export default function TermsOfService () {
     <>
       <Head>
         <title>Terms of Service | EasySave3 Editor</title>
-        <meta property='og:title' content='Terms of Service | EasySave3 Editor' />
+        <meta property='og:title' content='Terms of Service | EasySave3 Editor (NamelessNanashi Fork)' />
         <meta property='og:url' content='https://es3.namelessnanashi.dev/terms-of-service' />
         <meta
           property='og:description'
-          content='The Terms of Service which govern your access to and use of EasySave3 Editor.'
+          content='The Terms of Service which govern your access to and use of EasySave3 Editor (NamelessNanashi Fork).'
         />
         <meta
           name='description'
-          content='The Terms of Service which govern your access to and use of EasySave3 Editor.'
+          content='The Terms of Service which govern your access to and use of EasySave3 Editor (NamelessNanashi Fork).'
         />
       </Head>
       <Flex alignItems='center' justifyContent='center' mt='24' mb='14'>
@@ -29,7 +29,7 @@ export default function TermsOfService () {
           position='relative'
         >
           <Text maxWidth='500px'>
-            Terms of Service for <Link as={NextLink} href='/' color='blue.500'>EasySave3 Editor</Link><Dbr />
+            Terms of Service for <Link as={NextLink} href='/' color='blue.500'>This fork of the EasySave3 Editor</Link><Dbr />
 
             Effective date: 30 August 2025<Dbr />
 

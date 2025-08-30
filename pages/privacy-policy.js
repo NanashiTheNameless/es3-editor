@@ -7,7 +7,7 @@ export default function PrivacyPolicy () {
     <>
       <Head>
         <title>Privacy Policy | EasySave3 Editor</title>
-        <meta property='og:title' content='Privacy Policy | EasySave3 Editor' />
+        <meta property='og:title' content='Privacy Policy | EasySave3 Editor (NamelessNanashi Fork)' />
         <meta property='og:url' content='https://es3.namelessnanashi.dev/privacy-policy' />
         <meta
           property='og:description'
