@@ -34,7 +34,7 @@ export default function Home() {
     <>
       <Head>
         <meta property='og:title' content={'EasySave3 Editor | Modify your favorite games\' save files!'} />
-        <meta property='og:url' content='https://es3.lol/' />
+        <meta property='og:url' content='https://es3.namelessnanashi.dev/' />
         <meta
           name='og:description'
           content='EasySave3 Editor helps you empower your gaming journey with effortless save file editing. Seamlessly modify, and manage EasySave3 game saves with a user-friendly web application designed to enhance your gaming experience.'
