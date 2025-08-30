@@ -87,12 +87,12 @@ export default function Home () {
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content>
-            <Dialog.Header>
-              <Dialog.Title>Known game passwords</Dialog.Title>
-            </Dialog.Header>
             <Dialog.CloseTrigger asChild>
               <CloseButton />
             </Dialog.CloseTrigger>
+            <Dialog.Header>
+              <Dialog.Title>Known game passwords</Dialog.Title>
+            </Dialog.Header>
             <Dialog.Body>
               {passwords.map(({ gameName, password }, index) => (
                 <Box key={index}>
@@ -125,7 +125,6 @@ export default function Home () {
               <Text mt='5'>Can&apos;t find your game here?</Text>
               <Text>Try decrypting it without a password.</Text>
             </Dialog.Body>
-
             <Dialog.Footer>
               <Button onClick={onClose}>
                 Ok

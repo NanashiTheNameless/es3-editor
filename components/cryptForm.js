@@ -278,12 +278,12 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content>
-            <Dialog.Header color='orange'>
-              <Dialog.Title>Warning!</Dialog.Title>
-            </Dialog.Header>
             <Dialog.CloseTrigger asChild>
               <CloseButton />
             </Dialog.CloseTrigger>
+            <Dialog.Header color='orange'>
+              <Dialog.Title>Warning!</Dialog.Title>
+            </Dialog.Header>
             <Dialog.Body>
               {isEncryptionWarning
                 ? (
@@ -300,7 +300,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
                   </Text>
                   )}
             </Dialog.Body>
-
             <Dialog.Footer>
               <Button
                 colorScheme='teal'

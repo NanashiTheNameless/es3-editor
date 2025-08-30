@@ -43,6 +43,7 @@ export default function Editor ({ isLoading, setIsLoading, isOpen, onClose, data
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
+          <Dialog.CloseTrigger />
           <Dialog.Header>
             <Dialog.Title>Editor</Dialog.Title>
           </Dialog.Header>
