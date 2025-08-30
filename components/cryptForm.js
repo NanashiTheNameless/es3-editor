@@ -1,6 +1,5 @@
 import {Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal} from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/react';
-import { AlertIcon } from '@chakra-ui/react';
+import { Alert, AlertIcon } from '@chakra-ui/react';
 import { FaDownload, FaEdit } from 'react-icons/fa';
 import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
