@@ -1,7 +1,7 @@
 import {
   Box,
   Code,
-  Divider,
+  Separator,
   Flex,
   Heading,
   Input,
@@ -96,14 +96,14 @@ export default function Home() {
             Known game passwords
           </Button>
 
-          <Divider mt='8' mb='3' />
+          <Separator mt='8' mb='3' />
           <Heading size='md' mb='3'>Decryption</Heading>
           <CryptForm isLoading={isLoading} setIsLoading={setIsLoading} password={password} />
           <Text mt='5'>Some games might not encrypt their save files and</Text>
           <Text>only compress them using GZip. In this case, you</Text>
           <Text>don&apos;t have to provide a password.</Text>
 
-          <Divider mt='5' mb='3' />
+          <Separator mt='5' mb='3' />
           <Heading size='md' mb='3'>Encryption</Heading>
           <CryptForm isLoading={isLoading} setIsLoading={setIsLoading} password={password} isEncryption />
         </Box>
@@ -124,7 +124,7 @@ export default function Home() {
           <ModalBody>
             {passwords.map(({ gameName, password }, index) => (
               <Box key={index}>
-                {index !== 0 && <Divider my='2' />}
+                {index !== 0 && <Separator my='2' />}
                 <Box
                   display="flex"
                   flexDirection="row"
