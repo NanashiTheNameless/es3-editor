@@ -1,4 +1,4 @@
-import { ChakraProvider, Alert, AlertIcon, AlertTitle, AlertDescription, Link, Box } from '@chakra-ui/react';
+import { ChakraProvider, defaultSystem, Alert, AlertIcon, AlertTitle, AlertDescription, Link, Box } from '@chakra-ui/react';
 import Head from 'next/head';
 import './editor.css';
 
@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }) {
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
 
-      <ChakraProvider>
+      <ChakraProvider value={defaultSystem}>
         <Box position='fixed' zIndex='9999' width='100%' top='0'>
           <Alert
             status='info'
