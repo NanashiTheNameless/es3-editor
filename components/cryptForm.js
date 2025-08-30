@@ -1,4 +1,5 @@
-import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal, useToast } from '@chakra-ui/react';
+import { Box, Button, Text, Link, Checkbox, useDisclosure, CloseButton, Dialog, Portal} from '@chakra-ui/react';
+import { Toaster, toaster } from "@/components/ui/toaster";
 import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/alert';
 import { FaDownload, FaEdit } from 'react-icons/fa';
 import { useRef, useState } from 'react';
@@ -76,7 +77,7 @@ async function cryptData(data, password, isEncryption, shouldGzip) {
 }
 
 export default function CryptForm({ isEncryption, isLoading, setIsLoading, password }) {
-  const toast = useToast();
+
   const saveFileRef = useRef();
   const [data, setData] = useState(null);
   const [editorData, setEditorData] = useState(null);
@@ -135,14 +136,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             fileReader.onload = loadEvent => setData(Buffer.from(loadEvent.target.result));
             fileReader.onerror = e => {
               console.error(e);
-              toast({
+              toaster.create({
                 title: 'Failed processing the save file',
                 description: 'Please try choosing the save file again',
-                status: 'error',
+                type: 'error',
                 duration: 2500,
-                isClosable: true,
-                position: 'bottom-left'
-              });
+                closable: true});
             };
 
             const file = files[0];
@@ -178,14 +177,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               gtag('event', 'editor_open');
             
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
-              toast({
+              toaster.create({
                 title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
                 description: !data ? 'No file chosen' : 'No password provided',
-                status: 'error',
+                type: 'error',
                 duration: 2000,
-                isClosable: true,
-                position: 'bottom-left'
-              });
+                closable: true});
   
               return;
             }
@@ -197,14 +194,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               decryptedData = await cryptData(data, password, false);
             } catch (e) {
               console.error(e);
-              toast({
+              toaster.create({
                 title: 'Failed decrypting the save file',
                 description: 'Wrong decryption password? Try leaving the password field empty.',
-                status: 'error',
+                type: 'error',
                 duration: 3500,
-                isClosable: true,
-                position: 'bottom-left'
-              });
+                closable: true});
               
               setIsLoading(false);
               return;
@@ -217,7 +212,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                   'parse_error': getJSONParseError(decryptedData.cryptedData).message
                 });
 
-              toast({
+              toaster.create({
                 title: 'Can\'t open editor',
                 description: (
                   <>
@@ -225,11 +220,9 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                     <Text>Download the file and edit it manually.</Text>
                   </>
                 ),
-                status: 'error',
+                type: 'error',
                 duration: 5000,
-                isClosable: true,
-                position: 'bottom-left'
-              });
+                closable: true});
               
               setIsLoading(false);
               return;
@@ -256,14 +249,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             gtag('event', 'download_file', { 'is_encryption': isEncryption, 'should_gzip': shouldGzip });
 
           if (!data || (isEncryption ?  (!password && !shouldGzip) : (!password && !isGzip(data)))) {
-            toast({
+            toaster.create({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: !data ? 'No file chosen' : 'No password provided',
-              status: 'error',
+              type: 'error',
               duration: 2000,
-              isClosable: true,
-              position: 'bottom-left'
-            });
+              closable: true});
 
             return;
           }
@@ -280,14 +271,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             cryptedData = result.cryptedData;
           } catch (e) {
             console.error(e);
-            toast({
+            toaster.create({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: isEncryption ? 'Internal error' : 'Wrong decryption password? Try leaving the password field empty.',
-              status: 'error',
+              type: 'error',
               duration: 3500,
-              isClosable: true,
-              position: 'bottom-left'
-            });
+              closable: true});
             
             setIsLoading(false);
             return;
@@ -367,14 +356,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               cryptedData = result.cryptedData;
             } catch (e) {
               console.error(e);
-              toast({
+              toaster.create({
                 title: `Failed encrypting the edited save file`,
                 description: 'Internal error',
-                status: 'error',
+                type: 'error',
                 duration: 3500,
-                isClosable: true,
-                position: 'bottom-left'
-              });
+                closable: true});
 
               return false;
             }
