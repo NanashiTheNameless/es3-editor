@@ -164,7 +164,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
           width='100%' mt='2'
           display='block'
           onClick={async () => {
-
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
               toaster.create({
                 title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
@@ -197,7 +196,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
             }
 
             if (!isJSON(decryptedData.cryptedData)) {
-
               toaster.create({
                 title: 'Can\'t open editor',
                 description: (
@@ -232,7 +230,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
         isLoading={isLoading}
         loadingText={`${isEncryption ? 'Encrypting' : 'Decrypting'} the save file...`}
         onClick={async () => {
-
           if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data)))) {
             toaster.create({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
@@ -329,7 +326,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
           data={editorData}
           setData={setEditorData}
           saveData={async () => {
-
             let cryptedData
             try {
               const result = await cryptData(editorData.data, password, true, editorData.wasGunzipped)

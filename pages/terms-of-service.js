@@ -2,7 +2,7 @@ import { Box, Flex, Text, Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import Head from 'next/head'
 
-const Dbr = () => new Array(2, null).map((v, i) => <br key={i} />)
+const Dbr = () => (<><br /><br /></>)
 
 export default function TermsOfService () {
   return (
