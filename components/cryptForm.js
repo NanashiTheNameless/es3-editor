@@ -275,45 +275,47 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
       </Button>
 
       <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose() }}>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content>
-            <Dialog.CloseTrigger asChild>
-              <CloseButton />
-            </Dialog.CloseTrigger>
-            <Dialog.Header color='orange'>
-              <Dialog.Title>Warning!</Dialog.Title>
-            </Dialog.Header>
-            <Dialog.Body>
-              {isEncryptionWarning
-                ? (
-                  <Text>
-                    You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
-                    If you GZip a save file that isn&apos;t supposed to be GZipped, the game might not recognize it and might delete it.
-                  </Text>
-                  )
-                : (
-                  <Text>
-                    Your save file was also GUnZipped (decompressed). This means that when you are done editing your save file
-                    and want to re-encrypt it, you will have to check the GZip checkbox before so the file can also be re-compressed.
-                    Unless you check the box, the save file might not be recognized by the game and might be deleted.
-                  </Text>
-                  )}
-            </Dialog.Body>
-            <Dialog.Footer>
-              <Button
-                colorScheme='teal'
-                onClick={() => {
-                  if (isEncryptionWarning) { setShouldGzip(true) } else { download() }
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton />
+              </Dialog.CloseTrigger>
+              <Dialog.Header color='orange'>
+                <Dialog.Title>Warning!</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.Body>
+                {isEncryptionWarning
+                  ? (
+                    <Text>
+                      You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
+                      If you GZip a save file that isn&apos;t supposed to be GZipped, the game might not recognize it and might delete it.
+                    </Text>
+                    )
+                  : (
+                    <Text>
+                      Your save file was also GUnZipped (decompressed). This means that when you are done editing your save file
+                      and want to re-encrypt it, you will have to check the GZip checkbox before so the file can also be re-compressed.
+                      Unless you check the box, the save file might not be recognized by the game and might be deleted.
+                    </Text>
+                    )}
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Button
+                  colorScheme='teal'
+                  onClick={() => {
+                    if (isEncryptionWarning) { setShouldGzip(true) } else { download() }
 
-                  onClose()
-                }}
-              >
-                Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
-              </Button>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Positioner>
+                    onClose()
+                  }}
+                >
+                  Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
       </Dialog.Root>
 
       {!isEncryption && (

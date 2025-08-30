@@ -84,54 +84,56 @@ export default function Home () {
       <Footer />
 
       <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose() }}>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content>
-            <Dialog.CloseTrigger asChild>
-              <CloseButton />
-            </Dialog.CloseTrigger>
-            <Dialog.Header>
-              <Dialog.Title>Known game passwords</Dialog.Title>
-            </Dialog.Header>
-            <Dialog.Body>
-              {passwords.map(({ gameName, password }, index) => (
-                <Box key={index}>
-                  {index !== 0 && <Separator my='2' />}
-                  <Box
-                    display='flex'
-                    flexDirection='row'
-                    alignItems='center'
-                  >
-                    <Code
-                      maxW='80%'
-                      whiteSpace='normal'
-                      overflowWrap='break-word'
-                      wordBreak='break-word'
-                    >{password}
-                    </Code>
-                    <Text ml='auto'>{gameName}</Text>
-                    <Button
-                      ml='3' colorScheme='teal'
-                      onClick={() => {
-                        setPassword(password)
-                        onClose()
-                      }}
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton />
+              </Dialog.CloseTrigger>
+              <Dialog.Header>
+                <Dialog.Title>Known game passwords</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.Body>
+                {passwords.map(({ gameName, password }, index) => (
+                  <Box key={index}>
+                    {index !== 0 && <Separator my='2' />}
+                    <Box
+                      display='flex'
+                      flexDirection='row'
+                      alignItems='center'
                     >
-                      Use
-                    </Button>
+                      <Code
+                        maxW='80%'
+                        whiteSpace='normal'
+                        overflowWrap='break-word'
+                        wordBreak='break-word'
+                      >{password}
+                      </Code>
+                      <Text ml='auto'>{gameName}</Text>
+                      <Button
+                        ml='3' colorScheme='teal'
+                        onClick={() => {
+                          setPassword(password)
+                          onClose()
+                        }}
+                      >
+                        Use
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              ))}
-              <Text mt='5'>Can&apos;t find your game here?</Text>
-              <Text>Try decrypting it without a password.</Text>
-            </Dialog.Body>
-            <Dialog.Footer>
-              <Button onClick={onClose}>
-                Ok
-              </Button>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Positioner>
+                ))}
+                <Text mt='5'>Can&apos;t find your game here?</Text>
+                <Text>Try decrypting it without a password.</Text>
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Button onClick={onClose}>
+                  Ok
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
       </Dialog.Root>
     </>
   )

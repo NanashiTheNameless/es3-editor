@@ -20,7 +20,7 @@ export default function App ({ Component, pageProps }) {
       <ChakraProvider value={defaultSystem}>
         <Box position='fixed' zIndex='9999' width='100%' top='0'>
           <Alert.Root status='info' variant='solid'>
-            <Alert.Icon />
+            <Alert.Indicator />
             <Alert.Content>
               <Alert.Title>This tool is free and open source!</Alert.Title>
               <Alert.Description>

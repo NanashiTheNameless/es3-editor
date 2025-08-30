@@ -40,45 +40,47 @@ export default function Editor ({ isLoading, setIsLoading, isOpen, onClose, data
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(e) => { if (!e.open) onClose() }}>
-      <Dialog.Backdrop />
-      <Dialog.Positioner>
-        <Dialog.Content>
-          <Dialog.CloseTrigger />
-          <Dialog.Header>
-            <Dialog.Title>Editor</Dialog.Title>
-          </Dialog.Header>
-          <Dialog.Body mt='5'>
-            <div ref={editorContainerRef} />
-          </Dialog.Body>
-          <Dialog.Footer>
-            <Footer left />
-            <Button
-              colorScheme='orange'
-              isDisabled={isLoading}
-              onClick={async () => {
-                setIsLoading(true)
+      <Portal>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.CloseTrigger />
+            <Dialog.Header>
+              <Dialog.Title>Editor</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body mt='5'>
+              <div ref={editorContainerRef} />
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Footer left />
+              <Button
+                colorScheme='orange'
+                isDisabled={isLoading}
+                onClick={async () => {
+                  setIsLoading(true)
 
-                const isSaveSuccess = await saveData()
-                setIsLoading(false)
+                  const isSaveSuccess = await saveData()
+                  setIsLoading(false)
 
-                if (isSaveSuccess) { onClose() }
-              }}
-            >
-              Save
-            </Button>
-            <Button
-              ml='3'
-              onClick={() => {
-                setData(null)
-                onClose()
-              }}
-              isDisabled={isLoading}
-            >
-              Close
-            </Button>
-          </Dialog.Footer>
-        </Dialog.Content>
-      </Dialog.Positioner>
+                  if (isSaveSuccess) { onClose() }
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                ml='3'
+                onClick={() => {
+                  setData(null)
+                  onClose()
+                }}
+                isDisabled={isLoading}
+              >
+                Close
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
     </Dialog.Root>
   )
 }
