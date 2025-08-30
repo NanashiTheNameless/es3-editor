@@ -2,9 +2,9 @@ import { Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure
 import { forwardRef, useEffect, useState } from 'react'
 import Head from 'next/head'
 
-import CryptForm from '../components/cryptForm'
-import Footer from '../components/footer'
-import passwords from '../passwords'
+import CryptForm from '@/components/cryptForm'
+import Footer from '@/components/footer'
+import passwords from '@/passwords.json'
 
 export default function Home () {
   const [isLoading, setIsLoading] = useState(false)
