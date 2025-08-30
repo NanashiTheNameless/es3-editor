@@ -1,5 +1,4 @@
-import { Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton, Dialog, Portal } from '@chakra-ui/react'
-import { forwardRef, useEffect, useState } from 'react'
+import { Box, Code, Separator, Flex, Heading, Input, Text, Button, useDisclosure, IconButton, CloseButton } from '@chakra-ui/react'
 import Head from 'next/head'
 
 import CryptForm from '@/components/cryptForm'
