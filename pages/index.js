@@ -43,8 +43,6 @@ export default function Home () {
               value={password}
               placeholder='a1bc2d3fghi4...'
               onChange={e => {
-                if (typeof gtag !== 'undefined') { gtag('event', 'change_password', { password: e.target.value }) }
-
                 setPassword(e.target.value)
               }}
               disabled={isLoading}
@@ -55,8 +53,6 @@ export default function Home () {
               colorScheme='red'
               icon={<CloseButton />}
               onClick={() => {
-                if (typeof gtag !== 'undefined') { gtag('event', 'clear_password', { previous_password: password }) }
-
                 setPassword('')
               }}
             />
@@ -66,8 +62,6 @@ export default function Home () {
           <Button
             mt='2' colorScheme='teal'
             onClick={() => {
-              if (typeof gtag !== 'undefined') { gtag('event', 'open_known_passwords', { password }) }
-
               onOpen()
             }}
           >
@@ -119,8 +113,6 @@ export default function Home () {
                     <Button
                       ml='3' colorScheme='teal'
                       onClick={() => {
-                        if (typeof gtag !== 'undefined') { gtag('event', 'use_password', { game_name: gameName, password }) }
-
                         setPassword(password)
                         onClose()
                       }}

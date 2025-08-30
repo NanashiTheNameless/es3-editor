@@ -119,7 +119,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
           disabled={isLoading}
           onChange={changeEvent => {
             const files = changeEvent.target.files
-            if (typeof gtag !== 'undefined') { gtag('event', 'pick_file', { file_name: files[0] ? files[0].name : '', is_encryption: isEncryption, should_gzip: shouldGzip }) }
 
             if (!files.length) {
               setData(null)
@@ -165,7 +164,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
           width='100%' mt='2'
           display='block'
           onClick={async () => {
-            if (typeof gtag !== 'undefined') { gtag('event', 'editor_open') }
 
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
               toaster.create({
@@ -199,12 +197,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
             }
 
             if (!isJSON(decryptedData.cryptedData)) {
-              if (typeof gtag !== 'undefined') {
-                gtag('event', 'editor_malformed_data', {
-                  decrypted_data: decryptedData.cryptedData.toString().slice(0, 75),
-                  parse_error: getJSONParseError(decryptedData.cryptedData).message
-                })
-              }
 
               toaster.create({
                 title: 'Can\'t open editor',
@@ -240,7 +232,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
         isLoading={isLoading}
         loadingText={`${isEncryption ? 'Encrypting' : 'Decrypting'} the save file...`}
         onClick={async () => {
-          if (typeof gtag !== 'undefined') { gtag('event', 'download_file', { is_encryption: isEncryption, should_gzip: shouldGzip }) }
 
           if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data)))) {
             toaster.create({
@@ -338,7 +329,6 @@ export default function CryptForm ({ isEncryption, isLoading, setIsLoading, pass
           data={editorData}
           setData={setEditorData}
           saveData={async () => {
-            if (typeof gtag !== 'undefined') { gtag('event', 'editor_save') }
 
             let cryptedData
             try {
