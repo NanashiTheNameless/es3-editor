@@ -16,7 +16,8 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  IconButton
+  IconButton,
+  CloseButton
 } from '@chakra-ui/react';
 
 import { CloseIcon } from '@chakra-ui/icons';
@@ -82,9 +83,8 @@ export default function Home () {
           <Text>Check if it is already known below.</Text>
           <Button
             mt='2' colorScheme='teal'
-            onClick={() => {
-              onOpen();
-            }};
+            onClick={() => { onOpen();
+            }}
           >
             Known game passwords
           </Button>
@@ -134,9 +134,9 @@ export default function Home () {
                       <Button
                         ml='3' colorScheme='teal'
                         onClick={() => {
-                          setPassword(password)
+                          setPassword(password);
                           onClose();
-                        }};
+                        }}
                       >
                         Use
                       </Button>

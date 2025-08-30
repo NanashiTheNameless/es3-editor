@@ -16,8 +16,6 @@ export default function App ({ Component, pageProps }) {
 
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-
-      <ThemeProvider attribute='class' defaultTheme='dark'>
         <ChakraProvider value={defaultSystem}>
         <Box position='fixed' zIndex='9999' width='100%' top='0'>
           <Alert
@@ -34,6 +32,6 @@ export default function App ({ Component, pageProps }) {
         </Box>
         <Component {...pageProps} />
               </ChakraProvider>
-      </ThemeProvider>
     </>
   );
+}
