@@ -27,7 +27,7 @@ export default function PrivacyPolicy () {
           position='relative'
         >
           <Text maxWidth='500px'>
-            Privacy Policy for <Link as={NextLink} href='/' color='blue.500'>EasySave3 Editor</Link><br /><br />
+            Privacy Policy for <Link as={NextLink} href='/' color='blue.500'>This fork of the EasySave3 Editor</Link><br /><br />
 
             Effective date: 30 August 2025<br /><br />
 
