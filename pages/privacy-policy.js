@@ -35,7 +35,7 @@ export default function PrivacyPolicy () {
 
             1. Information Collection and Use<br />
             This fork of The EasySave3 Editor Web Application does not collect or store any personal information from users. The Application operates locally on the user&apos;s device, and all uploaded data and modifications remain strictly on the user&apos;s device. No data is transmitted or stored externally.<br /><br />
-            This fork uses Cloudflare Analytics on the domain level for anonymous usage statistics however does not require them to function, blocking &quot;cloudflareinsights.com&quot; will effectively disable analytics.<br /><br />
+            This fork uses Cloudflare Analytics on the domain level for anonymous usage statistics however does not require them to function, blocking &quot;cloudflareinsights.com&quot; will effectively disable these analytics.<br /><br />
 
             2. Cookies<br />
             The EasySave3 Editor Web Application may use cookies for the purpose of enhancing user experience and anonymous analytics. The cookies used are limited to the cookies utilized by cloudflare&apos;s analytics and anti-DDOS systems. These cookies may collect non-personally identifiable information about users and are handled by cloudflare automatically. You may choose to disable or block cookies through your browser settings, but please note that doing so may result in seeing more CAPTCHAS.<br /><br />
