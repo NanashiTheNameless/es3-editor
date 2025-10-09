@@ -38,7 +38,7 @@ export default function PrivacyPolicy () {
             This fork uses Cloudflare Analytics on the domain level for anonymous usage statistics however does not require them to function, blocking &quot;cloudflareinsights.com&quot; will effectively disable analytics.<br /><br />
 
             2. Cookies<br />
-            The EasySave3 Editor Web Application may use cookies for the purpose of enhancing user experience and anonymous analytics. The cookies used are limited to the cookies utilized by cloudflare's analytics and anti-DDOS systems. These cookies may collect non-personally identifiable information about users and are handled by cloudflare automatically. You may choose to disable or block cookies through your browser settings, but please note that doing so may result in seeing more CAPTCHAS.<br /><br />
+            The EasySave3 Editor Web Application may use cookies for the purpose of enhancing user experience and anonymous analytics. The cookies used are limited to the cookies utilized by cloudflare&apos;s analytics and anti-DDOS systems. These cookies may collect non-personally identifiable information about users and are handled by cloudflare automatically. You may choose to disable or block cookies through your browser settings, but please note that doing so may result in seeing more CAPTCHAS.<br /><br />
 
             3. Data Security<br />
             The EasySave3 Editor Web Application prioritizes data security and takes reasonable precautions to protect the user&apos;s uploaded data. However, please be aware that no method of transmission or electronic storage is 100% secure.<br /><br />
