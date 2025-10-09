@@ -29,7 +29,7 @@ export default function PrivacyPolicy () {
           <Text maxWidth='500px'>
             Privacy Policy for <Link as={NextLink} href='/' color='blue.500'>This fork of the EasySave3 Editor</Link><br /><br />
 
-            Effective date: 30 August 2025<br /><br />
+            Effective date: 8 October 2025<br /><br />
 
             NamelessNanashi (&quot;Developer&quot;) operates this fork of the EasySave3 Editor web application (&quot;Application&quot;). This page informs you of our policies regarding the collection, use, and disclosure of personal information we receive from users of the Application.<br /><br />
 
@@ -38,7 +38,7 @@ export default function PrivacyPolicy () {
             This fork uses Cloudflare Analytics on the domain level for anonymous usage statistics however does not require them to function, blocking &quot;cloudflareinsights.com&quot; will effectively disable analytics.<br /><br />
 
             2. Cookies<br />
-            The EasySave3 Editor Web Application uses cookies for the purpose of enhancing user experience and analyzing application usage. The cookies used are limited to Google services such as Google Analytics and Google AdSense. These cookies collect non-personally identifiable information about user interactions with the Application. You may choose to disable or block cookies through your browser settings, but please note that doing so may affect certain functionality of the Application.<br /><br />
+            The EasySave3 Editor Web Application uses cookies for the purpose of enhancing user experience and analyzing application usage. The cookies used are limited to the cookies utilized by cloudflare's analytics and anti-DDOS systems. These cookies may collect non-personally identifiable information about user interactions with the Application. You may choose to disable or block cookies through your browser settings, but please note that doing so may result in seeing more CAPTCHAS.<br /><br />
 
             3. Data Security<br />
             The EasySave3 Editor Web Application prioritizes data security and takes reasonable precautions to protect the user&apos;s uploaded data. However, please be aware that no method of transmission or electronic storage is 100% secure.<br /><br />
