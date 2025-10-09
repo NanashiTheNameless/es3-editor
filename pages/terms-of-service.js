@@ -31,7 +31,7 @@ export default function TermsOfService () {
           <Text maxWidth='500px'>
             Terms of Service for <Link as={NextLink} href='/' color='blue.500'>This fork of the EasySave3 Editor</Link><Dbr />
 
-            Effective date: 30 August 2025<Dbr />
+            Effective date: 8 October 2025<Dbr />
 
             Please read these Terms of Service (&quot;Terms&quot;) carefully before using this fork of the EasySave3 Editor web application (&quot;Application&quot;) provided by NamelessNanashi (&quot;Developer&quot;) and Alex Tușinean (&quot;Upstream Developer&quot;). These Terms govern your access to and use of the Application.<Dbr />
 
@@ -52,13 +52,13 @@ export default function TermsOfService () {
             You agree not to use this fork of the EasySave3 Editor Web Application for any illegal, unauthorized, or malicious purposes. The Application is intended for lawful and legitimate use.<Dbr />
 
             4. Disclaimer of Warranty<br />
-            This fork of The EasySave3 Editor Web Application is provided on an &quot;as is&quot; and &quot;as available&quot; basis without warranties of any kind, whether express or implied. Alex Tușinean does not warrant that the Application will be error-free or uninterrupted.<Dbr />
+            This fork of The EasySave3 Editor Web Application is provided on an &quot;as is&quot; and &quot;as available&quot; basis without warranties of any kind, whether express or implied. NamelessNanashi (&quot;Developer&quot;) and/or Alex Tușinean (&quot;Upstream Developer&quot;) do not warrant that the Application will be error-free or uninterrupted.<Dbr />
 
             5. Limitation of Liability<br />
             To the maximum extent permitted by law, NamelessNanashi (&quot;Developer&quot;) and/or Alex Tușinean (&quot;Upstream Developer&quot;) shall not be liable for any indirect, incidental, consequential, or punitive damages arising out of or in connection with the use or inability to use the EasySave3 Editor Web Application.<Dbr />
 
             6. No Affiliation with EasySave3 or Moodkie Interactive<br />
-            Please note that the EasySave3 Editor Web Application is developed by Alex Tușinean and is not affiliated with EasySave3 or its developers, Moodkie Interactive, in any way. Any references to EasySave3 within the Application are for descriptive purposes only.<Dbr />
+            Please note that the EasySave3 Editor Web Application is developed by NamelessNanashi (&quot;Fork Developer&quot;) and Alex Tușinean (&quot;Upstream Developer&quot;) and is not affiliated with EasySave3 or its developers, Moodkie Interactive, in any way. Any references to EasySave3 within the Application are for descriptive purposes only.<Dbr />
 
             7. No Affiliation with Alex Tușinean (&quot;Upstream Developer&quot;)<br />
             Please note that this fork of the EasySave3 Editor Web Application is a heavily modified fork and is not affiliated with Alex Tușinean (&quot;Upstream Developer&quot;) in any way shape or form other than being a fork based on their source code in accordance with <Link as={NextLink} href='https://github.com/alextusinean/es3-editor/blob/12bec284b80681cc3648725954d6acb7514a1272/LICENSE.txt' color='blue.500'>its license</Link>.<Dbr />
