@@ -33,7 +33,7 @@ export default function TermsOfService () {
 
             Effective date: 8 October 2025<Dbr />
 
-            Please read these Terms of Service (&quot;Terms&quot;) carefully before using this fork of the EasySave3 Editor web application (&quot;Application&quot;) provided by NamelessNanashi (&quot;Developer&quot;) and Alex Tușinean (&quot;Upstream Developer&quot;). These Terms govern your access to and use of the Application.<Dbr />
+            Please read these Terms of Service (&quot;Terms&quot;) carefully before using this fork of the EasySave3 Editor web application (&quot;Application&quot;) provided by NamelessNanashi (&quot;Fork Developer&quot;) and Alex Tușinean (&quot;Upstream Developer&quot;). These Terms govern your access to and use of the Application.<Dbr />
 
             1.	Acceptance of Terms<br />
             By accessing or using this fork of the EasySave3 Editor Application, you agree to be bound by these Terms and all applicable laws and regulations. If you do not agree with any of these Terms, you must not use the Application.<Dbr />
@@ -52,10 +52,10 @@ export default function TermsOfService () {
             You agree not to use this fork of the EasySave3 Editor Web Application for any illegal, unauthorized, or malicious purposes. The Application is intended for lawful and legitimate use.<Dbr />
 
             4. Disclaimer of Warranty<br />
-            This fork of The EasySave3 Editor Web Application is provided on an &quot;as is&quot; and &quot;as available&quot; basis without warranties of any kind, whether express or implied. NamelessNanashi (&quot;Developer&quot;) and/or Alex Tușinean (&quot;Upstream Developer&quot;) do not warrant that the Application will be error-free or uninterrupted.<Dbr />
+            This fork of The EasySave3 Editor Web Application is provided on an &quot;as is&quot; and &quot;as available&quot; basis without warranties of any kind, whether express or implied. NamelessNanashi (&quot;Fork Developer&quot;) and/or Alex Tușinean (&quot;Upstream Developer&quot;) do not warrant that the Application will be error-free or uninterrupted.<Dbr />
 
             5. Limitation of Liability<br />
-            To the maximum extent permitted by law, NamelessNanashi (&quot;Developer&quot;) and/or Alex Tușinean (&quot;Upstream Developer&quot;) shall not be liable for any indirect, incidental, consequential, or punitive damages arising out of or in connection with the use or inability to use the EasySave3 Editor Web Application.<Dbr />
+            To the maximum extent permitted by law, NamelessNanashi (&quot;Fork Developer&quot;) and/or Alex Tușinean (&quot;Upstream Developer&quot;) shall not be liable for any indirect, incidental, consequential, or punitive damages arising out of or in connection with the use or inability to use the EasySave3 Editor Web Application.<Dbr />
 
             6. No Affiliation with EasySave3 or Moodkie Interactive<br />
             Please note that the EasySave3 Editor Web Application is developed by NamelessNanashi (&quot;Fork Developer&quot;) and Alex Tușinean (&quot;Upstream Developer&quot;) and is not affiliated with EasySave3 or its developers, Moodkie Interactive, in any way. Any references to EasySave3 within the Application are for descriptive purposes only.<Dbr />
