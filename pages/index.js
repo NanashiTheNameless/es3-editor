@@ -16,10 +16,11 @@ import {
   ModalCloseButton,
   useDisclosure,
   IconButton,
-  CloseButton
+  CloseButton,
+  Link,
+  useToast
 } from '@chakra-ui/react';
-
-import { CloseIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -27,7 +28,62 @@ import CryptForm from '@/components/cryptForm';
 import Footer from '@/components/footer';
 import passwords from '@/passwords.json';
 
-export default function Home () {
+const PASSWORD_LENGTH_THRESHOLD = 50;
+
+function PasswordView({ toast, gameName, password, myIndex, selectedIndex, setSelectedIndex }) {
+  const selected = myIndex == selectedIndex;
+  const passesThreshold = password.length > PASSWORD_LENGTH_THRESHOLD;
+
+  return (
+    <>
+      <IconButton
+        visibility={passesThreshold ? 'visible' : 'hidden'}
+        size='sm' mr='2' variant='ghost' rounded='full'
+        icon={selected ? <ChevronRightIcon /> : <ChevronDownIcon />}
+        onClick={() => setSelectedIndex(selected ? -1 : myIndex)}
+      />
+      <Code
+        display={!selected ? 'none' : undefined}
+        maxW='50%'
+        whiteSpace='normal'
+        overflowWrap='break-word'
+        wordBreak='break-word'
+      >
+        {password}
+      </Code>
+      <Code display={selected ? 'none' : undefined}>
+        {password.slice(0, 25)}
+      </Code>
+      {!selected && passesThreshold ? (
+        <>
+          <Text>...</Text>
+          <Box ml='2'>
+            <Link
+              onClick={() => {
+                navigator.clipboard.writeText(password);
+                toast({
+                  title: 'Successfully copied',
+                  description: `The password for ${gameName} was copied to clipboard!`,
+                  status: 'success',
+                  duration: 1500,
+                  isClosable: true,
+                  position: 'bottom-left'
+                });
+              }} color='skyblue'
+            >
+              <Text fontSize='x-small'>unusually long password</Text>
+              <Text fontSize='small'>click to copy</Text>
+            </Link>
+          </Box>
+        </>
+      ) : false}
+    </>
+  );
+}
+
+export default function Home() {
+  const toast = useToast();
+  const [passwordIndex, setPasswordIndex] = useState(-1);
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -114,42 +170,41 @@ export default function Home () {
           <ModalHeader>Known game passwords</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-                {passwords.map(({ gameName, password }, index) => (
-                  <Box key={index}>
+            {passwords.map(({ gameName, password }, index) => (
+              <Box key={index}>
                 {index !== 0 && <Divider my='2' />}
-                    <Box
-                      display='flex'
-                      flexDirection='row'
-                      alignItems='center'
-                    >
-                      <Code
-                        maxW='80%'
-                        whiteSpace='normal'
-                        overflowWrap='break-word'
-                        wordBreak='break-word'
-                      >{password}
-                      </Code>
-                      <Text ml='auto'>{gameName}</Text>
-                      <Button
-                        ml='3' colorScheme='teal'
-                        onClick={() => {
-                          setPassword(password);
-                          onClose();
-                        }}
-                      >
-                        Use
-                      </Button>
-                    </Box>
-                  </Box>
-                ))}
-                <Text mt='5'>Can&apos;t find your game here?</Text>
-                <Text>Try decrypting it without a password.</Text>
+                <Box
+                  display='flex'
+                  flexDirection='row'
+                  alignItems='center'
+                >
+                  <PasswordView
+                    toast={toast} gameName={gameName}
+                    password={password} myIndex={index}
+                    selectedIndex={passwordIndex}
+                    setSelectedIndex={setPasswordIndex}
+                  />
+                  <Text ml='auto'>{gameName}</Text>
+                  <Button
+                    ml='3' colorScheme='teal'
+                    onClick={() => {
+                      setPassword(password);
+                      onClose();
+                    }}
+                  >
+                    Use
+                  </Button>
+                </Box>
+              </Box>
+            ))}
+            <Text mt='5'>Can&apos;t find your game here?</Text>
+            <Text>Try decrypting it without a password.</Text>
           </ModalBody>
 
           <ModalFooter>
-                <Button onClick={onClose}>
-                  Ok
-                </Button>
+            <Button onClick={onClose}>
+              Ok
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
