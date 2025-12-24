@@ -9,7 +9,7 @@ export default function Footer({ left }) {
       <Link as={NextLink} href='/terms-of-service' color='blue.500' mr='6.5px'>Terms of Service</Link>
       <text>| </text>
       <Link as={NextLink} href='/privacy-policy' color='blue.500'>Privacy Policy</Link>
-      <Text>This fork is made by <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='blue.500'>NamelessNanashi</Link></Text>
+      <Text>This fork is maintained by <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='blue.500'>NamelessNanashi</Link></Text>
     </Box>
   );
 }
