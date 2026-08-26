@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!!dist", "!!.next"]
+    "includes": ["**", "!!dist", "!!.next", "!!.pnp.*"]
   },
   "formatter": {
     "enabled": false
