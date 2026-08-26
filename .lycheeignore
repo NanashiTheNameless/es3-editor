@@ -3,5 +3,5 @@
 ^http://localhost(:[0-9]+)?/?$
 
 # gnu.org rate-limits automated link checkers and answers HTTP 429. These
-# licence URLs are stable and are referenced from LICENSE.txt.
+# license URLs are stable and are referenced from LICENSE.txt.
 ^https://www\.gnu\.org/licenses/
