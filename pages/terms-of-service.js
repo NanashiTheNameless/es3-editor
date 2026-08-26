@@ -23,7 +23,7 @@ export default function TermsOfService () {
         />
       </Head>
       <LegalPage>
-        Terms of Service for <Link as={NextLink} href='/' color='blue.500'>This fork of the EasySave3 Editor</Link><Dbr />
+        Terms of Service for <Link as={NextLink} href='/' color='#3182CE'>This fork of the EasySave3 Editor</Link><Dbr />
 
         Effective date: 8 October 2025<Dbr />
 
@@ -35,7 +35,7 @@ export default function TermsOfService () {
         2. License<Dbr />
 
         2.1. Grant of License:<br />
-        Please refer to the source code <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor/blob/main/LICENSE.txt' color='blue.500'>license file</Link>.<Dbr />
+        Please refer to the source code <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor/blob/main/LICENSE.txt' color='#3182CE'>license file</Link>.<Dbr />
 
         3. User Responsibilities<Dbr />
 
@@ -55,10 +55,10 @@ export default function TermsOfService () {
         Please note that the EasySave3 Editor Web Application is developed by NamelessNanashi (&quot;Fork Developer&quot;) and Alex Tușinean (&quot;Upstream Developer&quot;) and is not affiliated with EasySave3 or its developers, Moodkie Interactive, in any way. Any references to EasySave3 within the Application are for descriptive purposes only.<Dbr />
 
         7. No Affiliation with Alex Tușinean (&quot;Upstream Developer&quot;)<br />
-        Please note that this fork of the EasySave3 Editor Web Application is a heavily modified fork and is not affiliated with Alex Tușinean (&quot;Upstream Developer&quot;) in any way shape or form other than being a fork based on their source code in accordance with <Link as={NextLink} href='https://github.com/alextusinean/es3-editor/blob/12bec284b80681cc3648725954d6acb7514a1272/LICENSE.txt' color='blue.500'>its license</Link>.<Dbr />
+        Please note that this fork of the EasySave3 Editor Web Application is a heavily modified fork and is not affiliated with Alex Tușinean (&quot;Upstream Developer&quot;) in any way shape or form other than being a fork based on their source code in accordance with <Link as={NextLink} href='https://github.com/alextusinean/es3-editor/blob/12bec284b80681cc3648725954d6acb7514a1272/LICENSE.txt' color='#3182CE'>its license</Link>.<Dbr />
 
         8. Contact Information<br />
-        If you have any questions or concerns regarding these Terms or this fork of the EasySave3 Editor Web Application, please open an issue on its GitHub <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='blue.500'>NanashiTheNameless/es3-editor</Link>.
+        If you have any questions or concerns regarding these Terms or this fork of the EasySave3 Editor Web Application, please open an issue on its GitHub <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='#3182CE'>NanashiTheNameless/es3-editor</Link>.
       </LegalPage>
     </>
   );

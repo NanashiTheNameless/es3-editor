@@ -2,31 +2,34 @@
   "name": "es3-editor",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@4.18.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "next build",
+    "start": "serve dist",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/react": "^2.4.5",
-    "@emotion/react": "11",
-    "@emotion/styled": "11",
-    "crypto-browserify": "^3.12.0",
-    "framer-motion": "6",
-    "jsoneditor": "^10.1.0",
-    "next": "15.5.21",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^4.7.1"
+    "@chakra-ui/react": "3.36.1",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.1",
+    "crypto-browserify": "3.12.1",
+    "framer-motion": "13.1.1",
+    "jsoneditor": "10.4.3",
+    "jsonrepair": "3.13.0",
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-icons": "5.7.0"
   },
   "devDependencies": {
-    "eslint": "8.30.0",
-    "eslint-config-next": "13.0.7"
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.3",
+    "serve": "14.2.6",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "resolutions": {
-    "postcss": "8.5.26",
-    "sharp": "0.35.4"
+    "postcss": "8.5.26"
   }
 }

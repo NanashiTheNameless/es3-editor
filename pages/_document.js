@@ -1,18 +1,15 @@
-import { ColorModeScript } from '@chakra-ui/react';
 import NextDocument, { Html, Main, Head, NextScript } from 'next/document';
 
 export default class Document extends NextDocument {
   render () {
     return (
-      <Html lang='en'>
+      <Html lang='en' className='dark' style={{ colorScheme: 'dark' }}>
         <Head />
         <body>
-          <ColorModeScript initialColorMode='dark' />
-            <Main />
-            <NextScript />
+          <Main />
+          <NextScript />
         </body>
       </Html>
     );
   }
 }
-

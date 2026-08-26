@@ -1,18 +1,16 @@
-import { FlatCompat } from '@eslint/eslintrc'
- 
-const compat = new FlatCompat({
-  // import.meta.dirname is available after Node.js v20.11.0
-  baseDirectory: import.meta.dirname,
-})
- 
+import nextConfig from 'eslint-config-next';
+
 const eslintConfig = [
-  ...compat.config({
-    extends: ['next'],
+  ...nextConfig,
+  {
+    ignores: ['dist/**', 'out/**']
+  },
+  {
     rules: {
       'react/jsx-no-undef': 'off',
-      'react-hooks/exhaustive-deps': 'off',
-    },
-  }),
-]
- 
-export default eslintConfig
+      'react-hooks/exhaustive-deps': 'off'
+    }
+  }
+];
+
+export default eslintConfig;

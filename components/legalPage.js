@@ -5,8 +5,8 @@ export default function LegalPage({ children }) {
     <Flex alignItems='center' justifyContent='center' mt='24' mb='14'>
       <Box
         direction='column'
-        background='gray.700'
-        rounded='6'
+        background='#2D3748'
+        borderRadius='6px'
         p='12'
         position='relative'
       >

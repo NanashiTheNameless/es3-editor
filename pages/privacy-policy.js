@@ -21,7 +21,7 @@ export default function PrivacyPolicy () {
         />
       </Head>
       <LegalPage>
-        Privacy Policy for <Link as={NextLink} href='/' color='blue.500'>This fork of the EasySave3 Editor</Link><br /><br />
+        Privacy Policy for <Link as={NextLink} href='/' color='#3182CE'>This fork of the EasySave3 Editor</Link><br /><br />
 
         Effective date: 8 October 2025<br /><br />
 
@@ -41,7 +41,7 @@ export default function PrivacyPolicy () {
         This Privacy Policy is effective as of the date stated above and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page. We reserve the right to update or change our Privacy Policy at any time, and you should check this Privacy Policy periodically. Your continued use of the EasySave3 Editor Web Application after we post any modifications to the Privacy Policy on this page will constitute your acknowledgment of the modifications and your consent to abide and be bound by the modified Privacy Policy.<br /><br />
 
         5. Contact Us<br />
-        If you have any questions or concerns about this Privacy Policy or this fork of the EasySave3 Editor Web Application, please open an issue on its GitHub <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='blue.500'>NanashiTheNameless/es3-editor</Link>.
+        If you have any questions or concerns about this Privacy Policy or this fork of the EasySave3 Editor Web Application, please open an issue on its GitHub <Link as={NextLink} href='https://github.com/NanashiTheNameless/es3-editor' color='#3182CE'>NanashiTheNameless/es3-editor</Link>.
       </LegalPage>
     </>
   );

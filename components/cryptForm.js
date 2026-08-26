@@ -1,24 +1,20 @@
 import {
   Box,
   Button,
-  Text,
-  Link,
   Checkbox,
-  useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+  CloseButton,
+  Dialog,
+  Portal,
+  Text,
   useDisclosure
 } from '@chakra-ui/react';
 import { FaDownload, FaEdit } from 'react-icons/fa';
 import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import NextLink from 'next/link';
 import crypto from 'crypto';
+
+import { jsonParse } from './jsonParse';
+import { toaster } from './toaster';
 
 const Editor = dynamic(() => import('./editor'), { ssr: false });
 
@@ -30,16 +26,15 @@ function inputErrorToast(isEncryption, data) {
   return {
     title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
     description: !data ? 'No file chosen' : 'No password provided',
-    status: 'error',
+    type: 'error',
     duration: 2000,
-    isClosable: true,
-    position: 'bottom-left'
+    closable: true
   };
 }
 
 function isJSON(data) {
   try {
-    JSON.parse(data.toString());
+    jsonParse(data.toString());
   } catch (e) {
     return false;
   }
@@ -91,15 +86,14 @@ async function cryptData(data, password, isEncryption, shouldGzip) {
 }
 
 export default function CryptForm({ isEncryption, isLoading, setIsLoading, password }) {
-  const toast = useToast();
   const saveFileRef = useRef();
   const [data, setData] = useState(null);
   const [editorData, setEditorData] = useState(null);
   const [shouldGzip, setShouldGzip] = useState(false);
   const [lastFileName, setLastFileName] = useState(null);
   const [isEncryptionWarning, setIsEncryptionWarning] = useState(false);
-  const { isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure();
-  const { isOpen: isEditorOpen, onOpen: onEditorOpen, onClose: onEditorClose } = useDisclosure();
+  const { open: isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure();
+  const { open: isEditorOpen, onOpen: onEditorOpen, onClose: onEditorClose } = useDisclosure();
 
   const onOpen = (encryption) => {
     if (encryption)
@@ -147,13 +141,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             fileReader.onload = loadEvent => setData(Buffer.from(loadEvent.target.result));
             fileReader.onerror = e => {
               console.error(e);
-              toast({
+              toaster.create({
                 title: 'Failed processing the save file',
                 description: 'Please try choosing the save file again',
-                status: 'error',
+                type: 'error',
                 duration: 2500,
-                isClosable: true,
-                position: 'bottom-left'
+                closable: true
               });
             };
 
@@ -163,31 +156,38 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           }}
         />
         {isEncryption && (
-          <Checkbox
+          <Checkbox.Root
             disabled={isLoading}
-            isChecked={shouldGzip}
-            onChange={e => {
-              if (!e.target.checked)
+            checked={shouldGzip}
+            colorPalette='teal'
+            onCheckedChange={({ checked }) => {
+              if (!checked)
                 setShouldGzip(false);
               else
                 onOpen(true);
             }}
           >
-            GZip
-          </Checkbox>
+            <Checkbox.HiddenInput />
+            <Checkbox.Control borderColor='#4A5568' _checked={{ bg: '#319795', borderColor: '#319795' }}>
+              <Checkbox.Indicator />
+            </Checkbox.Control>
+            <Checkbox.Label>GZip</Checkbox.Label>
+          </Checkbox.Root>
         )}
       </Box>
       <div width='100%'></div>
 
       {!isEncryption && (
         <Button
-          leftIcon={<FaEdit />}
-          colorScheme='orange'
+          bg='#FBD38D'
+          color='#1A202C'
+          _hover={{ bg: '#F6AD55' }}
+          fontWeight='semibold'
           width='100%' mt='2'
-          display='block'
+          gap='2'
           onClick={async () => {
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
-              toast(inputErrorToast(isEncryption, data));
+              toaster.create(inputErrorToast(isEncryption, data));
               return;
             }
 
@@ -198,13 +198,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               decryptedData = await cryptData(data, password, false);
             } catch (e) {
               console.error(e);
-              toast({
+              toaster.create({
                 title: 'Failed decrypting the save file',
                 description: 'Wrong decryption password? Try leaving the password field empty.',
-                status: 'error',
+                type: 'error',
                 duration: 3500,
-                isClosable: true,
-                position: 'bottom-left'
+                closable: true
               });
               
               setIsLoading(false);
@@ -212,7 +211,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             }
 
             if (!isJSON(decryptedData.cryptedData)) {
-              toast({
+              toaster.create({
                 title: 'Can\'t open editor',
                 description: (
                   <>
@@ -220,10 +219,9 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
                     <Text>Download the file and edit it manually.</Text>
                   </>
                 ),
-                status: 'error',
+                type: 'error',
                 duration: 5000,
-                isClosable: true,
-                position: 'bottom-left'
+                closable: true
               });
               
               setIsLoading(false);
@@ -235,31 +233,34 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             setIsLoading(false);
           }}
         >
+          <FaEdit />
           EXPERIMENTAL! Open editor
         </Button>
       )}
 
       <Button
-        leftIcon={<FaDownload />}
-        colorScheme='teal'
+        bg='#81E6D9'
+        color='#1A202C'
+        _hover={{ bg: '#4FD1C5' }}
+        fontWeight='semibold'
         width='100%'
         mt='2'
-        isLoading={isLoading}
+        loading={isLoading}
         loadingText={`${isEncryption ? 'Encrypting' : 'Decrypting'} the save file...`}
+        gap='2'
         onClick={async () => {
           if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data) && !isJSON(data)))) {
-            toast(inputErrorToast(isEncryption, data));
+            toaster.create(inputErrorToast(isEncryption, data));
             return;
           }
 
           if (!isEncryption && !password && isJSON(data)) {
-            toast({
+            toaster.create({
               title: 'This save file isn\'t encrypted',
               description: 'It\'s already plaintext JSON. Use "Open editor" to edit it directly.',
-              status: 'info',
+              type: 'info',
               duration: 5000,
-              isClosable: true,
-              position: 'bottom-left'
+              closable: true
             });
 
             return;
@@ -276,13 +277,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             cryptedData = result.cryptedData;
           } catch (e) {
             console.error(e);
-            toast({
+            toaster.create({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: isEncryption ? 'Internal error' : 'Wrong decryption password? Try leaving the password field empty.',
-              status: 'error',
+              type: 'error',
               duration: 3500,
-              isClosable: true,
-              position: 'bottom-left'
+              closable: true
             });
             
             setIsLoading(false);
@@ -298,50 +298,67 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           setIsLoading(false);
         }}
       >
+        <FaDownload />
         Download {isEncryption ? 'encrypted' : 'decrypted'} save file
       </Button>
 
-      <Modal
-        blockScrollOnMount={false}
-        isOpen={isOpen} onClose={onClose}
-        scrollBehavior='inside' isCentered
+      <Dialog.Root
+        preventScroll={false}
+        open={isOpen}
+        onOpenChange={({ open }) => {
+          if (!open)
+            onClose();
+        }}
+        scrollBehavior='inside'
+        placement='center'
       >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color='orange'>Warning!</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {isEncryptionWarning ? (
-              <Text>
-                You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
-                If you GZip a save file that isn&apos;t supposed to be GZipped, the game might not recognize it and might delete it.
-              </Text>
-            ) : (
-              <Text>
-                Your save file was also GUnZipped (decompressed). This means that when you are done editing your save file
-                and want to re-encrypt it, you will have to check the GZip checkbox before so the file can also be re-compressed.
-                Unless you check the box, the save file might not be recognized by the game and might be deleted.
-              </Text>
-            )}
-          </ModalBody>
+        <Portal>
+          <Dialog.Backdrop bg='rgba(0, 0, 0, 0.48)' />
+          <Dialog.Positioner>
+            <Dialog.Content bg='#2D3748' color='white'>
+              <Dialog.Header>
+                <Dialog.Title color='orange'>Warning!</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton position='absolute' top='2' insetEnd='2' />
+              </Dialog.CloseTrigger>
+              <Dialog.Body>
+                {isEncryptionWarning ? (
+                  <Text>
+                    You should only check this box if you were warned that the save file was GUnZipped too when you decrypted it.
+                    If you GZip a save file that isn&apos;t supposed to be GZipped, the game might not recognize it and might delete it.
+                  </Text>
+                ) : (
+                  <Text>
+                    Your save file was also GUnZipped (decompressed). This means that when you are done editing your save file
+                    and want to re-encrypt it, you will have to check the GZip checkbox before so the file can also be re-compressed.
+                    Unless you check the box, the save file might not be recognized by the game and might be deleted.
+                  </Text>
+                )}
+              </Dialog.Body>
 
-          <ModalFooter>
-            <Button
-              colorScheme='teal'
-              onClick={() => {
-                if (isEncryptionWarning)
-                  setShouldGzip(true);
-                else
-                  download();
+              <Dialog.Footer>
+                <Button
+                  bg='#81E6D9'
+                  color='#1A202C'
+                  _hover={{ bg: '#4FD1C5' }}
+                  fontWeight='semibold'
+                  onClick={() => {
+                    if (isEncryptionWarning)
+                      setShouldGzip(true);
+                    else
+                      download();
 
-                onClose();
-              }}
-            >
-              Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+                    onClose();
+                  }}
+                >
+                  Ok, proceed{!isEncryptionWarning ? ' with download' : ''}
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
 
       {!isEncryption && (
         <Editor
@@ -358,13 +375,12 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               cryptedData = result.cryptedData;
             } catch (e) {
               console.error(e);
-              toast({
+              toaster.create({
                 title: `Failed encrypting the edited save file`,
                 description: 'Internal error',
-                status: 'error',
+                type: 'error',
                 duration: 3500,
-                isClosable: true,
-                position: 'bottom-left'
+                closable: true
               });
 
               return false;
