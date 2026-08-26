@@ -269,7 +269,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           if (typeof gtag != 'undefined')
             gtag('event', 'download_file', { 'is_encryption': isEncryption, 'should_gzip': shouldGzip });
 
-          if (!data || (isEncryption ?  (!password && !shouldGzip) : (!password && !isGzip(data)))) {
+          if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data) && !isJSON(data)))) {
             toast({
               title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
               description: !data ? 'No file chosen' : 'No password provided',
@@ -282,7 +282,19 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
             return;
           }
 
-          
+          if (!isEncryption && !password && isJSON(data)) {
+            toast({
+              title: 'This save file isn\'t encrypted',
+              description: 'It\'s already plaintext JSON. Use "Open editor" to edit it directly.',
+              status: 'info',
+              duration: 5000,
+              isClosable: true,
+              position: 'bottom-left'
+            });
+
+            return;
+          }
+
           setIsLoading(true);
 
           let fileName = isEncryption ? 'SaveFile.encrypted.txt' : 'SaveFile.decrypted.txt';
