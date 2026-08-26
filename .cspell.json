@@ -1,0 +1,38 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignorePaths": [
+    "**/*-megalinter_file_names_cspell.txt",
+    "*.xcf",
+    ".git/**",
+    ".next/**",
+    "LICENSE.txt",
+    "dist/**",
+    "megalinter-reports/**",
+    "node_modules/**",
+    "passwords.json",
+    "yarn.lock"
+  ],
+  "words": [
+    "alextusinean",
+    "apos",
+    "browserslist",
+    "chakra",
+    "cloudflareinsights",
+    "crypted",
+    "elif",
+    "fghi",
+    "jsoneditor",
+    "megalinter",
+    "Moodkie",
+    "NamelessNanashi",
+    "Nanashi",
+    "NanashiTheNameless",
+    "nextjs",
+    "skyblue",
+    "stefanzweifel",
+    "Tusinean",
+    "Tușinean",
+    "vercel"
+  ]
+}
