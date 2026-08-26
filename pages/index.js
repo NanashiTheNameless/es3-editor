@@ -26,7 +26,7 @@ import passwords from '@/passwords.json';
 const PASSWORD_LENGTH_THRESHOLD = 50;
 
 function PasswordView({ gameName, password, myIndex, selectedIndex, setSelectedIndex }) {
-  const selected = myIndex == selectedIndex;
+  const selected = myIndex === selectedIndex;
   const passesThreshold = password.length > PASSWORD_LENGTH_THRESHOLD;
 
   return (
@@ -102,7 +102,9 @@ export default function Home() {
         />
       </Head>
 
-      <a id='downloader' style={{ display: 'none' }} />
+      <a id='downloader' href='#download' hidden>
+        Download generated save file
+      </a>
       <Flex alignItems='center' justifyContent='center' mt='24' mb='14'>
         <Box
           direction='column'
@@ -192,7 +194,7 @@ export default function Home() {
               </Dialog.CloseTrigger>
               <Dialog.Body>
                 {passwords.map(({ gameName, password }, index) => (
-                  <Box key={index}>
+                  <Box key={gameName}>
                     {index !== 0 && <Separator my='2' borderColor='#4A5568' />}
                     <Box
                       display='flex'

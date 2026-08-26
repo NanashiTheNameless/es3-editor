@@ -1,0 +1,22 @@
+{
+  "_fixtureNotice": "Synthetic plaintext ES3 test data — not a real game save",
+  "player": {
+    name: "Test Player",
+    "level": 7,
+    "position": {
+      "x": 12.5,
+      "y": 3,
+      "z": -8.25,
+    },
+  },
+  "PhoneClientDict": {
+    8376: {
+      "contactName": "Example Contact",
+      "unreadMessages": 2,
+    },
+  },
+  "inventory": [
+    { "id": "health_potion", "quantity": 3 },
+    { "id": "rusty_key", "quantity": 1 },
+  ],
+}

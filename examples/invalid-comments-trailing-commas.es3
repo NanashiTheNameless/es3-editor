@@ -1,0 +1,12 @@
+{
+  "_fixtureNotice": "Repairable fixture with comments and trailing commas",
+  // Games sometimes leave development comments in otherwise JSON-like saves.
+  "player": {
+    "name": "Comment Test",
+    "level": 2,
+  },
+  "inventory": [
+    { "id": "map", "quantity": 1 },
+    { "id": "coin", "quantity": 24 },
+  ],
+}

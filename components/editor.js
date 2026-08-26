@@ -1,52 +1,50 @@
 import {
-  Box,
   Button,
   CloseButton,
   Dialog,
-  Portal
+  Portal,
+  Textarea
 } from '@chakra-ui/react';
 import JSONEditor from 'jsoneditor';
 import { useEffect, useCallback, useRef, useState } from 'react';
 
 import Footer from './footer';
-import { jsonParse } from './jsonParse';
+import { jsonParse } from './jsonParse.mjs';
 
 export default function Editor({ isLoading, setIsLoading, isOpen, onClose, data, setData, saveData }) {
   const [editorContainer, setEditorContainer] = useState(null);
   const editorRef = useRef(null);
 
   useEffect(() => {
-    if (!editorContainer || !data)
+    if (!isOpen || !editorContainer || !data || data.editorMode === 'text')
       return;
 
     const editor = new JSONEditor(editorContainer, {
-      mode: isLoading ? 'view' : 'tree',
+      mode: 'tree',
+      modes: ['tree', 'view'],
       onChangeText: newData => {
         setData({ ...data, data: Buffer.from(newData) });
       }
     });
 
-    const parsedData = jsonParse(data.data.toString());
-
     editorRef.current = editor;
-    editor.set(parsedData);
-    setData({
-      ...data,
-      data: Buffer.from(JSON.stringify(parsedData, null, 2))
-    });
+    editor.set(jsonParse(data.data.toString()));
 
     return () => {
       editorRef.current = null;
       editor.destroy();
     };
-  }, [editorContainer]);
+  }, [editorContainer, isOpen, data?.editorMode]);
 
   useEffect(() => {
     if (!editorRef.current)
       return;
 
+    if (data?.editorMode === 'text')
+      return;
+
     editorRef.current.setMode(isLoading ? 'view' : 'tree');
-  }, [isLoading]);
+  }, [data?.editorMode, isLoading]);
 
   const editorContainerRef = useCallback(node => {
     if (node)
@@ -67,13 +65,33 @@ export default function Editor({ isLoading, setIsLoading, isOpen, onClose, data,
         <Dialog.Positioner pt='20'>
           <Dialog.Content bg='#2D3748' color='white'>
             <Dialog.Header>
-              <Dialog.Title>Editor</Dialog.Title>
+              <Dialog.Title>{data?.editorMode === 'text' ? 'Text editor' : 'JSON editor'}</Dialog.Title>
             </Dialog.Header>
             <Dialog.CloseTrigger asChild>
               <CloseButton position='absolute' top='2' insetEnd='2' />
             </Dialog.CloseTrigger>
             <Dialog.Body mt='5'>
-              <div ref={editorContainerRef}></div>
+              {data?.editorMode === 'text' ? (
+                <Textarea
+                  aria-label='Raw save file text'
+                  value={data.data.toString()}
+                  onChange={event => setData({ ...data, data: Buffer.from(event.target.value) })}
+                  readOnly={isLoading}
+                  spellCheck={false}
+                  minHeight='calc(100vh - 14rem)'
+                  resize='none'
+                  bg='#1A202C'
+                  color='white'
+                  caretColor='white'
+                  borderColor='#4A5568'
+                  fontFamily='var(--app-font-family)'
+                  fontSize='sm'
+                  lineHeight='1.5'
+                  _focus={{ borderColor: '#81E6D9', boxShadow: '0 0 0 1px #81E6D9' }}
+                />
+              ) : (
+                <div ref={editorContainerRef}></div>
+              )}
             </Dialog.Body>
             <Dialog.Footer>
               <Footer left />

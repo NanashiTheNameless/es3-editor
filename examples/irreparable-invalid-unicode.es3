@@ -1,0 +1,5 @@
+{
+  "_fixtureNotice": "Intentionally unrecoverable fixture",
+  "playerName": "Broken unicode escape: \uZZZZ",
+  "level": 1
+}

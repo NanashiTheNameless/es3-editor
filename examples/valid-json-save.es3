@@ -1,0 +1,16 @@
+{
+  "_fixtureNotice": "Synthetic plaintext ES3 test data — not a real game save",
+  "player": {
+    "name": "Valid Example",
+    "level": 12,
+    "health": 87.5
+  },
+  "inventory": [
+    { "id": "flashlight", "quantity": 1 },
+    { "id": "battery", "quantity": 4 }
+  ],
+  "settings": {
+    "musicVolume": 0.7,
+    "subtitles": true
+  }
+}

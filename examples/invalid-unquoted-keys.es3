@@ -1,0 +1,12 @@
+{
+  "_fixtureNotice": "Repairable fixture with unquoted property names",
+  player: {
+    name: "Unquoted Keys",
+    level: 4,
+    checkpoint: "harbor"
+  },
+  questState: {
+    tutorialComplete: true,
+    activeQuest: "find_the_radio"
+  }
+}

@@ -13,13 +13,13 @@ import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import crypto from 'crypto';
 
-import { jsonParse } from './jsonParse';
+import { inspectJSON } from './jsonParse.mjs';
 import { toaster } from './toaster';
 
 const Editor = dynamic(() => import('./editor'), { ssr: false });
 
 function isGzip(data) {
-  return data[0] == 0x1F && data[1] == 0x8B;
+  return data[0] === 0x1F && data[1] === 0x8B;
 }
 
 function inputErrorToast(isEncryption, data) {
@@ -32,13 +32,9 @@ function inputErrorToast(isEncryption, data) {
   };
 }
 
-function isJSON(data) {
-  try {
-    jsonParse(data.toString());
-  } catch (e) {
-    return false;
-  }
-  return true;
+function isEditableJSON(data) {
+  const inspection = inspectJSON(data.toString());
+  return inspection.isValid || inspection.isRepairable;
 }
 
 async function pipeThrough(data, stream) {
@@ -89,11 +85,17 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
   const saveFileRef = useRef();
   const [data, setData] = useState(null);
   const [editorData, setEditorData] = useState(null);
+  const [pendingEditorData, setPendingEditorData] = useState(null);
   const [shouldGzip, setShouldGzip] = useState(false);
   const [lastFileName, setLastFileName] = useState(null);
   const [isEncryptionWarning, setIsEncryptionWarning] = useState(false);
   const { open: isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure();
   const { open: isEditorOpen, onOpen: onEditorOpen, onClose: onEditorClose } = useDisclosure();
+  const {
+    open: isInvalidJSONOpen,
+    onOpen: onInvalidJSONOpen,
+    onClose: onInvalidJSONClose
+  } = useDisclosure();
 
   const onOpen = (encryption) => {
     if (encryption)
@@ -121,6 +123,26 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
     const downloader = document.getElementById('downloader');
     downloader.click();
     window.URL.revokeObjectURL(downloader.href);
+  };
+
+  const closeInvalidJSONDialog = () => {
+    setPendingEditorData(null);
+    onInvalidJSONClose();
+  };
+
+  const openPendingEditor = (shouldRepair) => {
+    if (!pendingEditorData)
+      return;
+
+    const { repairedData, ...originalData } = pendingEditorData;
+
+    setEditorData({
+      ...originalData,
+      data: shouldRepair ? repairedData : originalData.data,
+      editorMode: shouldRepair ? 'tree' : 'text'
+    });
+    closeInvalidJSONDialog();
+    onEditorOpen();
   };
 
   return (
@@ -186,7 +208,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           width='100%' mt='2'
           gap='2'
           onClick={async () => {
-            if (!data || (!password && !isGzip(data) && !isJSON(data))) {
+            if (!data || (!password && !isGzip(data) && !isEditableJSON(data))) {
               toaster.create(inputErrorToast(isEncryption, data));
               return;
             }
@@ -210,7 +232,8 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               return;
             }
 
-            if (!isJSON(decryptedData.cryptedData)) {
+            const jsonInspection = inspectJSON(decryptedData.cryptedData.toString());
+            if (!jsonInspection.isValid && !jsonInspection.isRepairable) {
               toaster.create({
                 title: 'Can\'t open editor',
                 description: (
@@ -228,8 +251,21 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
               return;
             }
 
-            setEditorData({ wasGunzipped: decryptedData.wasGunzipped, data: decryptedData.cryptedData });
-            onEditorOpen();
+            if (jsonInspection.isRepairable) {
+              setPendingEditorData({
+                wasGunzipped: decryptedData.wasGunzipped,
+                data: decryptedData.cryptedData,
+                repairedData: Buffer.from(jsonInspection.repaired)
+              });
+              onInvalidJSONOpen();
+            } else {
+              setEditorData({
+                wasGunzipped: decryptedData.wasGunzipped,
+                data: decryptedData.cryptedData,
+                editorMode: 'tree'
+              });
+              onEditorOpen();
+            }
             setIsLoading(false);
           }}
         >
@@ -249,15 +285,15 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
         loadingText={`${isEncryption ? 'Encrypting' : 'Decrypting'} the save file...`}
         gap='2'
         onClick={async () => {
-          if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data) && !isJSON(data)))) {
+          if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data) && !isEditableJSON(data)))) {
             toaster.create(inputErrorToast(isEncryption, data));
             return;
           }
 
-          if (!isEncryption && !password && isJSON(data)) {
+          if (!isEncryption && !password && isEditableJSON(data)) {
             toaster.create({
               title: 'This save file isn\'t encrypted',
-              description: 'It\'s already plaintext JSON. Use "Open editor" to edit it directly.',
+              description: 'It\'s already plaintext JSON or JSON-like data. Use "Open editor" to edit it directly.',
               type: 'info',
               duration: 5000,
               closable: true
@@ -268,11 +304,11 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
 
           setIsLoading(true);
 
-          let fileName = isEncryption ? 'SaveFile.encrypted.txt' : 'SaveFile.decrypted.txt';
+          const fileName = isEncryption ? 'SaveFile.encrypted.txt' : 'SaveFile.decrypted.txt';
           let wasGunzipped = false;
           let cryptedData;
           try {
-            let result = await cryptData(data, password, isEncryption, shouldGzip);
+            const result = await cryptData(data, password, isEncryption, shouldGzip);
             wasGunzipped = result.wasGunzipped;
             cryptedData = result.cryptedData;
           } catch (e) {
@@ -360,6 +396,65 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
         </Portal>
       </Dialog.Root>
 
+      <Dialog.Root
+        preventScroll={false}
+        open={isInvalidJSONOpen}
+        onOpenChange={({ open }) => {
+          if (!open)
+            closeInvalidJSONDialog();
+        }}
+        placement='center'
+      >
+        <Portal>
+          <Dialog.Backdrop bg='rgba(0, 0, 0, 0.48)' />
+          <Dialog.Positioner>
+            <Dialog.Content width='calc(100% - 2rem)' maxWidth='42rem' bg='#2D3748' color='white'>
+              <Dialog.Header>
+                <Dialog.Title color='#FBD38D'>Invalid JSON detected</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton position='absolute' top='2' insetEnd='2' />
+              </Dialog.CloseTrigger>
+              <Dialog.Body>
+                <Text>
+                  This save uses JSON-like syntax that strict JSON parsers reject. That can be intentional in game save files.
+                </Text>
+                <Text mt='3'>
+                  <strong>Open as-is</strong> uses raw text mode and preserves the original data unless you edit it.
+                </Text>
+                <Text mt='3'>
+                  <strong>Repair and open</strong> converts the data to standard JSON before opening the tree editor.
+                  This changes the file and could make it incompatible with the game.
+                </Text>
+              </Dialog.Body>
+              <Dialog.Footer flexWrap='wrap'>
+                <Button onClick={closeInvalidJSONDialog}>
+                  Cancel
+                </Button>
+                <Button
+                  bg='#FBD38D'
+                  color='#1A202C'
+                  _hover={{ bg: '#F6AD55' }}
+                  fontWeight='semibold'
+                  onClick={() => openPendingEditor(true)}
+                >
+                  Repair and open
+                </Button>
+                <Button
+                  bg='#81E6D9'
+                  color='#1A202C'
+                  _hover={{ bg: '#4FD1C5' }}
+                  fontWeight='semibold'
+                  onClick={() => openPendingEditor(false)}
+                >
+                  Open as-is
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
+
       {!isEncryption && (
         <Editor
           isLoading={isLoading}
@@ -371,7 +466,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           saveData={async () => {
             let cryptedData;
             try {
-              let result = await cryptData(editorData.data, password, true, editorData.wasGunzipped);
+              const result = await cryptData(editorData.data, password, true, editorData.wasGunzipped);
               cryptedData = result.cryptedData;
             } catch (e) {
               console.error(e);

@@ -1,0 +1,9 @@
+{
+  '_fixtureNotice': 'Repairable fixture using single-quoted strings',
+  'player': {
+    'name': 'Single Quotes',
+    'level': 9,
+    'equippedItem': 'old_camera'
+  },
+  'flags': ['intro_seen', 'door_unlocked']
+}
