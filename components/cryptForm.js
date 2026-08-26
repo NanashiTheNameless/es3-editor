@@ -11,8 +11,8 @@ import {
 import { FaDownload, FaEdit } from 'react-icons/fa';
 import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import crypto from 'crypto';
 
+import { decryptEs3, encryptEs3 } from './es3Crypto.mjs';
 import { inspectJSON } from './jsonParse.mjs';
 import { toaster } from './toaster';
 
@@ -60,17 +60,11 @@ async function cryptData(data, password, isEncryption, shouldGzip) {
     if (shouldGzip)
       data = await pipeThrough(data, new CompressionStream('gzip'));
 
-    if (password) {
-      const iv = crypto.randomBytes(16);
-      const cipher = crypto.createCipheriv('aes-128-cbc', crypto.pbkdf2Sync(password, iv, 100, 16, 'sha1'), iv);
-      data = Buffer.concat([iv, cipher.update(data), cipher.final()]);
-    }
+    if (password)
+      data = Buffer.from(await encryptEs3(data, password));
   } else {
-    if (password) {
-      const iv = data.subarray(0, 16);
-      const decipher = crypto.createDecipheriv('aes-128-cbc', crypto.pbkdf2Sync(password, iv, 100, 16, 'sha1'), iv);
-      data = Buffer.concat([decipher.update(data.subarray(16)), decipher.final()]);
-    }
+    if (password)
+      data = Buffer.from(await decryptEs3(data, password));
 
     if (isGzip(data)) {
       wasGunzipped = true;

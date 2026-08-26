@@ -14,7 +14,6 @@
     "@chakra-ui/react": "^3.36.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "crypto-browserify": "^3.12.1",
     "framer-motion": "^13.1.1",
     "jsoneditor": "^10.4.3",
     "jsonrepair": "^3.15.0",
