@@ -14,7 +14,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "crypto-browserify": "^3.12.0",
-    "framer-motion": "6",
+    "framer-motion": "13",
     "jsoneditor": "^10.1.0",
     "next": "15.5.21",
     "react": "18.2.0",
