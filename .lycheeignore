@@ -1,0 +1,7 @@
+# Local development server URL documented in README.md. It is only reachable
+# while `yarn dev` is running, never from CI.
+^http://localhost(:[0-9]+)?/?$
+
+# gnu.org rate-limits automated link checkers and answers HTTP 429. These
+# licence URLs are stable and are referenced from LICENSE.txt.
+^https://www\.gnu\.org/licenses/

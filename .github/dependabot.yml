@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "yarn" # See documentation for possible values
+  - package-ecosystem: "npm" # Covers npm, yarn and pnpm manifests
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"

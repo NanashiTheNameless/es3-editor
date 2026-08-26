@@ -1,0 +1,19 @@
+# gitleaks configuration for es3-editor
+#
+# passwords.json is a catalogue of the Easy Save 3 encryption passwords used by
+# published games. They are published deliberately - decrypting a save file with
+# them is the entire purpose of this tool, and the application surfaces them in
+# its "Known game passwords" dialog. They are not credentials belonging to this
+# project, so gitleaks' generic high-entropy rules are allowlisted for that file
+# only. Every other path is still scanned with the default rule set.
+
+title = "es3-editor gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Publicly documented Easy Save 3 game passwords, not project secrets"
+paths = [
+  '''passwords\.json''',
+]

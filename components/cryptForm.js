@@ -26,6 +26,17 @@ function isGzip(data) {
   return data[0] == 0x1F && data[1] == 0x8B;
 }
 
+function inputErrorToast(isEncryption, data) {
+  return {
+    title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
+    description: !data ? 'No file chosen' : 'No password provided',
+    status: 'error',
+    duration: 2000,
+    isClosable: true,
+    position: 'bottom-left'
+  };
+}
+
 function isJSON(data) {
   try {
     JSON.parse(data.toString());
@@ -176,15 +187,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
           display='block'
           onClick={async () => {
             if (!data || (!password && !isGzip(data) && !isJSON(data))) {
-              toast({
-                title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
-                description: !data ? 'No file chosen' : 'No password provided',
-                status: 'error',
-                duration: 2000,
-                isClosable: true,
-                position: 'bottom-left'
-              });
-  
+              toast(inputErrorToast(isEncryption, data));
               return;
             }
 
@@ -245,15 +248,7 @@ export default function CryptForm({ isEncryption, isLoading, setIsLoading, passw
         loadingText={`${isEncryption ? 'Encrypting' : 'Decrypting'} the save file...`}
         onClick={async () => {
           if (!data || (isEncryption ? (!password && !shouldGzip) : (!password && !isGzip(data) && !isJSON(data)))) {
-            toast({
-              title: `Failed ${isEncryption ? 'encrypting' : 'decrypting'} the save file`,
-              description: !data ? 'No file chosen' : 'No password provided',
-              status: 'error',
-              duration: 2000,
-              isClosable: true,
-              position: 'bottom-left'
-            });
-
+            toast(inputErrorToast(isEncryption, data));
             return;
           }
 
