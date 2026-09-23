@@ -2398,7 +2398,7 @@ __metadata:
     "@chakra-ui/react": "npm:^3.37.0"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.1"
-    framer-motion: "npm:^13.3.0"
+    framer-motion: "npm:^13.4.0"
     jsoneditor: "npm:^10.4.3"
     jsonrepair: "npm:^3.15.0"
     next: "npm:^16.3.5"
@@ -2462,9 +2462,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^13.3.0":
-  version: 13.3.0
-  resolution: "framer-motion@npm:13.3.0"
+"framer-motion@npm:^13.4.0":
+  version: 13.4.0
+  resolution: "framer-motion@npm:13.4.0"
   dependencies:
     motion-dom: "npm:^13.3.0"
     motion-utils: "npm:^13.3.0"
@@ -2477,7 +2477,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/2dd9a1cba3e981761ea13557d0ee1c7075561152b139103395a778ed699a504e866b62f97350e062aa2e598ad4ffdcef893174c5bee77de239654d6beafbd0c0
+  checksum: 10c0/1cba0f674c0a3893c7803876a54fa2c2c66a1a06665668cc8145909478cc6d78944c85a8eb9bdc169c61b3163cc597a2c0ebd0bcc37c2e3410e5960950b5d40b
   languageName: node
   linkType: hard
 
