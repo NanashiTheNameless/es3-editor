@@ -23,7 +23,7 @@
     "react-icons": "^5.7.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.15",
+    "@biomejs/biome": "^2.6.3",
     "serve": "^14.2.6",
     "typescript": "^7.0.2"
   },
