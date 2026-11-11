@@ -11,7 +11,7 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.37.0",
+    "@chakra-ui/react": "^3.38.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "framer-motion": "^14.9.0",
