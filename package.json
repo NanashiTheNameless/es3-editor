@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.8",
-    "serve": "^14.2.7",
+    "serve": "^14.2.8",
     "typescript": "^7.0.2"
   },
   "resolutions": {
